@@ -1040,9 +1040,36 @@
                 // For < 0: solution is between roots (minRoot < x < maxRoot)
                 // For > 0: solution is outside roots (x < minRoot or x > maxRoot)
                 if (sign === '<') {
-                    // Check if they entered: minRoot < x < maxRoot
-                    if (num1 === minRoot && sign1 === '<' && sign2 === '<' && num2 === maxRoot) {
-                        correct = true;
+                    // Accept various notations for "between" relationship:
+                    // 1. num1 < x < num2 (standard, where num1 < num2)
+                    // 2. num2 > x > num1 (reversed, where num2 > num1)
+                    // 3. num1 > x > num2 (standard notation, but bounds reversed where num1 > num2)
+                    // 4. num2 < x < num1 (reversed notation with bounds reversed where num2 < num1)
+                    
+                    // Normalize: determine the actual bounds from the user input
+                    let userMinBound, userMaxBound;
+                    
+                    if (sign1 === '<' && sign2 === '<') {
+                        // Format: num1 < x < num2
+                        userMinBound = num1;
+                        userMaxBound = num2;
+                    } else if (sign1 === '>' && sign2 === '>') {
+                        // Format: num1 > x > num2 (reversed)
+                        userMinBound = num2;
+                        userMaxBound = num1;
+                    } else if (sign1 === '<' && sign2 === '>') {
+                        // This doesn't make sense for a continuous range, skip
+                        correct = false;
+                    } else if (sign1 === '>' && sign2 === '<') {
+                        // This doesn't make sense for a continuous range, skip
+                        correct = false;
+                    }
+                    
+                    // Check if the normalized bounds match the correct answer
+                    if ((sign1 === '<' && sign2 === '<') || (sign1 === '>' && sign2 === '>')) {
+                        if (userMinBound === minRoot && userMaxBound === maxRoot) {
+                            correct = true;
+                        }
                     }
                 } else {
                     // Check if they entered: x < minRoot or x > maxRoot
