@@ -53,6 +53,36 @@
             font-weight: bold;
         }
         
+        .difficulty-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .difficulty-btn {
+            padding: 10px 24px;
+            font-size: 14px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            background: white;
+            color: #6b7280;
+        }
+        
+        .difficulty-btn.active {
+            background: #374151;
+            color: white;
+            border-color: #374151;
+        }
+        
+        .difficulty-btn:hover {
+            border-color: #374151;
+            transform: translateY(-1px);
+        }
+        
         .question-box {
             background: white;
             padding: 30px;
@@ -266,6 +296,11 @@
             Score: <span id="correct">0</span> / <span id="total">0</span>
         </div>
         
+        <div class="difficulty-selector">
+            <button class="difficulty-btn active" onclick="setDifficulty('easy')">Easy Mode</button>
+            <button class="difficulty-btn" onclick="setDifficulty('hard')">Hard Mode</button>
+        </div>
+        
         <div class="question-box">
             <div class="equation" id="equation"></div>
             <div class="instruction">Factor the equation:</div>
@@ -300,12 +335,35 @@
         let currentQuestion = {};
         let correctCount = 0;
         let totalCount = 0;
+        let difficulty = 'easy';
+        
+        function setDifficulty(mode) {
+            difficulty = mode;
+            
+            // Update button styles
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Generate new question with new difficulty
+            generateQuestion();
+        }
         
         function generateQuestion() {
-            // Generate random integers for k and j
-            // Range: -9 to 9
-            const k = Math.floor(Math.random() * 19) - 9;
-            const j = Math.floor(Math.random() * 19) - 9;
+            // Generate random integers for k and j based on difficulty
+            // Easy: -5 to 5, Hard: -10 to 10
+            let min, max;
+            if (difficulty === 'easy') {
+                min = -5;
+                max = 5;
+            } else {
+                min = -10;
+                max = 10;
+            }
+            
+            const k = Math.floor(Math.random() * (max - min + 1)) + min;
+            const j = Math.floor(Math.random() * (max - min + 1)) + min;
             
             // From (x + k)(x + j) = 0
             // Expanding: x² + (k+j)x + kj = 0
