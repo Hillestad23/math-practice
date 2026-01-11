@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 50%, #2d3748 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,13 +25,14 @@
             background: white;
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             max-width: 600px;
             width: 100%;
+            backdrop-filter: blur(10px);
         }
         
         h1 {
-            color: #333;
+            color: #1f2937;
             text-align: center;
             margin-bottom: 10px;
             font-size: 28px;
@@ -39,7 +40,7 @@
         
         .subtitle {
             text-align: center;
-            color: #666;
+            color: #9ca3af;
             margin-bottom: 30px;
             font-size: 14px;
         }
@@ -48,29 +49,29 @@
             text-align: center;
             margin-bottom: 30px;
             font-size: 18px;
-            color: #667eea;
+            color: #4b5563;
             font-weight: bold;
         }
         
         .question-box {
-            background: #f8f9fa;
+            background: white;
             padding: 30px;
             border-radius: 15px;
             margin-bottom: 30px;
-            border: 2px solid #e9ecef;
+            border: 1px solid #d1d5db;
         }
         
         .equation {
             font-size: 32px;
             text-align: center;
-            color: #333;
+            color: #111827;
             margin-bottom: 20px;
             font-weight: bold;
         }
         
         .instruction {
             text-align: center;
-            color: #666;
+            color: #6b7280;
             margin-bottom: 25px;
             font-size: 16px;
         }
@@ -86,39 +87,42 @@
         
         .input-group span {
             font-size: 24px;
-            color: #333;
+            color: #111827;
         }
         
         input[type="number"] {
             width: 80px;
             padding: 12px;
             font-size: 20px;
-            border: 2px solid #ddd;
+            border: 2px solid #e5e7eb;
             border-radius: 8px;
             text-align: center;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            background: white;
         }
         
         input[type="number"]:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #6b7280;
+            box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
         }
         
         select {
             width: 60px;
             padding: 12px 8px;
             font-size: 20px;
-            border: 2px solid #ddd;
+            border: 2px solid #e5e7eb;
             border-radius: 8px;
             text-align: center;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
             cursor: pointer;
             background: white;
         }
         
         select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #6b7280;
+            box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
         }
         
         .buttons {
@@ -139,25 +143,25 @@
         }
         
         .btn-check {
-            background: #667eea;
+            background: #10b981;
             color: white;
         }
         
         .btn-check:hover {
-            background: #5568d3;
+            background: #059669;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
         }
         
         .btn-next {
-            background: #48bb78;
+            background: #10b981;
             color: white;
         }
         
         .btn-next:hover {
-            background: #38a169;
+            background: #059669;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
         }
         
         .feedback {
@@ -171,58 +175,58 @@
         }
         
         .feedback.correct {
-            background: #c6f6d5;
-            color: #22543d;
-            border: 2px solid #48bb78;
+            background: #f3f4f6;
+            color: #1f2937;
+            border: 2px solid #9ca3af;
             display: block;
         }
         
         .feedback.incorrect {
-            background: #fed7d7;
-            color: #742a2a;
-            border: 2px solid #f56565;
+            background: #f9fafb;
+            color: #374151;
+            border: 2px solid #9ca3af;
             display: block;
         }
         
         .solution {
             margin-top: 15px;
             padding: 15px;
-            background: #fff5f5;
+            background: #f3f4f6;
             border-radius: 8px;
-            color: #c53030;
+            color: #374151;
             font-size: 18px;
         }
         
         .btn-hint {
-            background: #ed8936;
-            color: white;
+            background: #fbbf24;
+            color: #1f2937;
         }
         
         .btn-hint:hover {
-            background: #dd6b20;
+            background: #f59e0b;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(237, 137, 54, 0.4);
+            box-shadow: 0 5px 20px rgba(251, 191, 36, 0.4);
         }
         
         .btn-solution {
-            background: #e53e3e;
+            background: #ef4444;
             color: white;
         }
         
         .btn-solution:hover {
-            background: #c53030;
+            background: #dc2626;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(229, 62, 62, 0.4);
+            box-shadow: 0 5px 20px rgba(239, 68, 68, 0.4);
         }
         
         @keyframes flashGreen {
-            0%, 100% { background: #f8f9fa; }
-            50% { background: #c6f6d5; }
+            0%, 100% { background: white; }
+            50% { background: #f3f4f6; }
         }
         
         @keyframes flashRed {
-            0%, 100% { background: #f8f9fa; }
-            50% { background: #fed7d7; }
+            0%, 100% { background: white; }
+            50% { background: #e5e7eb; }
         }
         
         .question-box.animate-correct {
