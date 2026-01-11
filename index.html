@@ -267,6 +267,80 @@
             animation: flashRed 0.6s ease-in-out;
         }
         
+        .home-screen {
+            display: block;
+        }
+        
+        .home-screen.hidden {
+            display: none !important;
+        }
+        
+        .game-screen {
+            display: none;
+        }
+        
+        .game-screen.active {
+            display: block !important;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .menu-card {
+            background: white;
+            border: 2px solid #d1d5db;
+            border-radius: 12px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-color: #6b7280;
+        }
+        
+        .menu-card h2 {
+            color: #1f2937;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .menu-card p {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .menu-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .back-button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            background: #6b7280;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .back-button:hover {
+            background: #4b5563;
+            transform: translateY(-1px);
+        }
+        
         @media (max-width: 500px) {
             .container {
                 padding: 25px;
@@ -284,77 +358,174 @@
                 width: 70px;
                 font-size: 18px;
             }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Quadratic Factorization Practice</h1>
-        <p class="subtitle">Factor the quadratic equation into (x + k)(x + j) = 0</p>
-        
-        <div class="score">
-            Score: <span id="correct">0</span> / <span id="total">0</span>
+        <!-- Home Screen -->
+        <div class="home-screen" id="homeScreen">
+            <h1>Math Practice Hub</h1>
+            <p class="subtitle">Choose a practice mode to begin</p>
+            
+            <div class="menu-grid">
+                <div class="menu-card" id="factorizationCard">
+                    <div class="menu-icon">📐</div>
+                    <h2>Factorization</h2>
+                    <p>Factor quadratic equations into (x + k)(x + j) = 0</p>
+                </div>
+                
+                <div class="menu-card" id="inequalitiesCard">
+                    <div class="menu-icon">⚖️</div>
+                    <h2>Inequalities</h2>
+                    <p>Solve quadratic inequalities with &lt; and &gt; signs</p>
+                </div>
+            </div>
         </div>
         
-        <div class="difficulty-selector">
-            <button class="difficulty-btn active" onclick="setDifficulty('easy')">Easy Mode</button>
-            <button class="difficulty-btn" onclick="setDifficulty('hard')">Hard Mode</button>
+        <!-- Factorization Game -->
+        <div class="game-screen" id="factorizationGame">
+            <button class="back-button" onclick="goHome()">← Back to Home</button>
+            
+            <h1>Quadratic Factorization Practice</h1>
+            <p class="subtitle">Factor the quadratic equation into (x + k)(x + j) = 0</p>
+            
+            <div class="score">
+                Score: <span id="correct-fact">0</span> / <span id="total-fact">0</span>
+            </div>
+            
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" onclick="setDifficulty('easy', 'factorization')">Easy Mode</button>
+                <button class="difficulty-btn" onclick="setDifficulty('hard', 'factorization')">Hard Mode</button>
+            </div>
+            
+            <div class="question-box">
+                <div class="equation" id="equation-fact"></div>
+                <div class="instruction">Factor the equation:</div>
+                <div class="input-group">
+                    <span>(x</span>
+                    <select id="sign-1-fact">
+                        <option value="+">+</option>
+                        <option value="-">−</option>
+                    </select>
+                    <input type="number" id="input-1-fact">
+                    <span>)(x</span>
+                    <select id="sign-2-fact">
+                        <option value="+">+</option>
+                        <option value="-">−</option>
+                    </select>
+                    <input type="number" id="input-2-fact">
+                    <span>) = 0</span>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-check" onclick="checkAnswer('factorization')">Check Answer</button>
+                    <button class="btn-hint" onclick="showHint('factorization')">💡 Hint</button>
+                    <button class="btn-solution" onclick="showSolution('factorization')">Show Solution</button>
+                    <button class="btn-next" onclick="nextQuestion('factorization')">Next Question</button>
+                </div>
+                
+                <div class="feedback" id="feedback-fact"></div>
+            </div>
         </div>
         
-        <div class="question-box">
-            <div class="equation" id="equation"></div>
-            <div class="instruction">Factor the equation:</div>
-            <div class="input-group">
-                <span>(x</span>
-                <select id="sign-1">
-                    <option value="+">+</option>
-                    <option value="-">−</option>
-                </select>
-                <input type="number" id="input-1">
-                <span>)(x</span>
-                <select id="sign-2">
-                    <option value="+">+</option>
-                    <option value="-">−</option>
-                </select>
-                <input type="number" id="input-2">
-                <span>) = 0</span>
+        <!-- Inequalities Game -->
+        <div class="game-screen" id="inequalitiesGame">
+            <button class="back-button" onclick="goHome()">← Back to Home</button>
+            
+            <h1>Quadratic Inequalities Practice</h1>
+            <p class="subtitle">Find the values for which the inequality is true</p>
+            
+            <div class="score">
+                Score: <span id="correct-ineq">0</span> / <span id="total-ineq">0</span>
             </div>
             
-            <div class="buttons">
-                <button class="btn-check" onclick="checkAnswer()">Check Answer</button>
-                <button class="btn-hint" onclick="showHint()">💡 Hint</button>
-                <button class="btn-solution" onclick="showSolution()">Show Solution</button>
-                <button class="btn-next" onclick="nextQuestion()">Next Question</button>
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" onclick="setDifficulty('easy', 'inequalities')">Easy Mode</button>
+                <button class="difficulty-btn" onclick="setDifficulty('hard', 'inequalities')">Hard Mode</button>
             </div>
             
-            <div class="feedback" id="feedback"></div>
+            <div class="question-box">
+                <div class="equation" id="equation-ineq"></div>
+                <div class="instruction">Solve for x (find the solution range):</div>
+                <div class="input-group">
+                    <input type="number" id="input-1-ineq">
+                    <select id="sign-1-ineq">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                    </select>
+                    <span>x</span>
+                    <select id="sign-2-ineq">
+                        <option value="<">&lt;</option>
+                        <option value=">">&gt;</option>
+                    </select>
+                    <input type="number" id="input-2-ineq">
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-check" onclick="checkAnswer('inequalities')">Check Answer</button>
+                    <button class="btn-hint" onclick="showHint('inequalities')">💡 Hint</button>
+                    <button class="btn-solution" onclick="showSolution('inequalities')">Show Solution</button>
+                    <button class="btn-next" onclick="nextQuestion('inequalities')">Next Question</button>
+                </div>
+                
+                <div class="feedback" id="feedback-ineq"></div>
+            </div>
         </div>
     </div>
     
     <script>
+        let currentGame = null;
         let currentQuestion = {};
-        let correctCount = 0;
-        let totalCount = 0;
-        let difficulty = 'easy';
+        let correctCount = { factorization: 0, inequalities: 0 };
+        let totalCount = { factorization: 0, inequalities: 0 };
+        let difficulty = { factorization: 'easy', inequalities: 'easy' };
         
-        function setDifficulty(mode) {
-            difficulty = mode;
-            
-            // Update button styles
-            document.querySelectorAll('.difficulty-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Generate new question with new difficulty
-            generateQuestion();
+        function goHome() {
+            document.getElementById('homeScreen').classList.remove('hidden');
+            document.getElementById('factorizationGame').classList.remove('active');
+            document.getElementById('inequalitiesGame').classList.remove('active');
+            currentGame = null;
         }
         
-        function generateQuestion() {
+        function startGame(gameType) {
+            currentGame = gameType;
+            document.getElementById('homeScreen').classList.add('hidden');
+            
+            if (gameType === 'factorization') {
+                document.getElementById('factorizationGame').classList.add('active');
+                generateQuestion('factorization');
+            } else if (gameType === 'inequalities') {
+                document.getElementById('inequalitiesGame').classList.add('active');
+                generateQuestion('inequalities');
+            }
+        }
+        
+        function setDifficulty(mode, gameType) {
+            difficulty[gameType] = mode;
+            
+            // Update button styles for the specific game
+            const gameId = gameType === 'factorization' ? 'factorizationGame' : 'inequalitiesGame';
+            document.querySelectorAll(`#${gameId} .difficulty-btn`).forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(mode)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Generate new question with new difficulty
+            generateQuestion(gameType);
+        }
+        
+        function generateQuestion(gameType) {
             // Generate random integers for k and j based on difficulty
             // Easy: -5 to 5, Hard: -10 to 10
             let min, max;
-            if (difficulty === 'easy') {
+            if (difficulty[gameType] === 'easy') {
                 min = -5;
                 max = 5;
             } else {
@@ -371,13 +542,17 @@
             const b = k + j;
             const c = k * j;
             
-            currentQuestion = { k, j, b, c };
+            // For inequalities, randomly choose < or >
+            const sign = Math.random() < 0.5 ? '<' : '>';
             
-            displayQuestion();
+            currentQuestion = { k, j, b, c, sign, gameType };
+            
+            displayQuestion(gameType);
         }
         
-        function displayQuestion() {
-            const { b, c } = currentQuestion;
+        function displayQuestion(gameType) {
+            const { b, c, sign } = currentQuestion;
+            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
             
             // Format the equation nicely
             let equation = "x²";
@@ -400,130 +575,241 @@
                 }
             }
             
-            equation += " = 0";
-            
-            document.getElementById('equation').textContent = equation;
-            document.getElementById('input-1').value = '';
-            document.getElementById('input-2').value = '';
-            document.getElementById('sign-1').value = '+';
-            document.getElementById('sign-2').value = '+';
-            document.getElementById('feedback').style.display = 'none';
-            document.getElementById('sign-1').focus();
-        }
-        
-        function checkAnswer() {
-            const sign1 = document.getElementById('sign-1').value;
-            const sign2 = document.getElementById('sign-2').value;
-            const num1 = parseInt(document.getElementById('input-1').value);
-            const num2 = parseInt(document.getElementById('input-2').value);
-            
-            if (isNaN(num1) || isNaN(num2)) {
-                alert('Please enter both numbers!');
-                return;
-            }
-            
-            // Convert sign and number to the value k or j
-            // If sign is +, the value in factored form is positive
-            // If sign is -, the value in factored form is negative
-            const value1 = sign1 === '+' ? num1 : -num1;
-            const value2 = sign2 === '+' ? num2 : -num2;
-            
-            const { k, j } = currentQuestion;
-            const feedback = document.getElementById('feedback');
-            const questionBox = document.querySelector('.question-box');
-            
-            totalCount++;
-            
-            // Check if the answer is correct (order doesn't matter)
-            if ((value1 === k && value2 === j) || (value1 === j && value2 === k)) {
-                correctCount++;
-                feedback.className = 'feedback correct';
-                feedback.innerHTML = '✓ Correct! Well done!';
-                
-                // Trigger green animation
-                questionBox.classList.remove('animate-incorrect');
-                questionBox.classList.add('animate-correct');
-                setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
+            // Add appropriate comparison
+            if (gameType === 'factorization') {
+                equation += " = 0";
             } else {
-                feedback.className = 'feedback incorrect';
-                const sign1Str = k >= 0 ? '+' : '−';
-                const sign2Str = j >= 0 ? '+' : '−';
-                feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: (x ${sign1Str} ${Math.abs(k)})(x ${sign2Str} ${Math.abs(j)}) = 0<br>or (x ${sign2Str} ${Math.abs(j)})(x ${sign1Str} ${Math.abs(k)}) = 0</div>`;
-                
-                // Trigger red animation
-                questionBox.classList.remove('animate-correct');
-                questionBox.classList.add('animate-incorrect');
-                setTimeout(() => questionBox.classList.remove('animate-incorrect'), 600);
+                equation += " " + sign + " 0";
             }
             
-            updateScore();
+            document.getElementById('equation-' + suffix).textContent = equation;
+            document.getElementById('input-1-' + suffix).value = '';
+            document.getElementById('input-2-' + suffix).value = '';
+            
+            if (gameType === 'factorization') {
+                document.getElementById('sign-1-fact').value = '+';
+                document.getElementById('sign-2-fact').value = '+';
+                document.getElementById('sign-1-fact').focus();
+            } else {
+                document.getElementById('sign-1-ineq').value = '<';
+                document.getElementById('sign-2-ineq').value = '<';
+                document.getElementById('input-1-ineq').focus();
+            }
+            
+            document.getElementById('feedback-' + suffix).style.display = 'none';
         }
         
-        function showHint() {
-            const { k, j } = currentQuestion;
-            const feedback = document.getElementById('feedback');
+        function checkAnswer(gameType) {
+            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
             
-            // Randomly show either k or j
-            const showK = Math.random() < 0.5;
-            const hintValue = showK ? k : j;
-            const hintSign = hintValue >= 0 ? '+' : '−';
-            const hintNumber = Math.abs(hintValue);
+            if (gameType === 'factorization') {
+                const sign1 = document.getElementById('sign-1-fact').value;
+                const sign2 = document.getElementById('sign-2-fact').value;
+                const num1 = parseInt(document.getElementById('input-1-fact').value);
+                const num2 = parseInt(document.getElementById('input-2-fact').value);
+                
+                if (isNaN(num1) || isNaN(num2)) {
+                    alert('Please enter both numbers!');
+                    return;
+                }
+                
+                const value1 = sign1 === '+' ? num1 : -num1;
+                const value2 = sign2 === '+' ? num2 : -num2;
+                
+                const { k, j } = currentQuestion;
+                const feedback = document.getElementById('feedback-fact');
+                const questionBox = document.querySelector(`#factorizationGame .question-box`);
+                
+                totalCount[gameType]++;
+                
+                if ((value1 === k && value2 === j) || (value1 === j && value2 === k)) {
+                    correctCount[gameType]++;
+                    feedback.className = 'feedback correct';
+                    feedback.innerHTML = '✓ Correct! Well done!';
+                    questionBox.classList.remove('animate-incorrect');
+                    questionBox.classList.add('animate-correct');
+                    setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
+                } else {
+                    feedback.className = 'feedback incorrect';
+                    const sign1Str = k >= 0 ? '+' : '−';
+                    const sign2Str = j >= 0 ? '+' : '−';
+                    feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: (x ${sign1Str} ${Math.abs(k)})(x ${sign2Str} ${Math.abs(j)})<br>or (x ${sign2Str} ${Math.abs(j)})(x ${sign1Str} ${Math.abs(k)})</div>`;
+                    questionBox.classList.remove('animate-correct');
+                    questionBox.classList.add('animate-incorrect');
+                    setTimeout(() => questionBox.classList.remove('animate-incorrect'), 600);
+                }
+            } else {
+                // Inequality checking
+                const num1 = parseInt(document.getElementById('input-1-ineq').value);
+                const sign1 = document.getElementById('sign-1-ineq').value;
+                const sign2 = document.getElementById('sign-2-ineq').value;
+                const num2 = parseInt(document.getElementById('input-2-ineq').value);
+                
+                if (isNaN(num1) || isNaN(num2)) {
+                    alert('Please enter both numbers!');
+                    return;
+                }
+                
+                const { k, j, sign } = currentQuestion;
+                const feedback = document.getElementById('feedback-ineq');
+                const questionBox = document.querySelector(`#inequalitiesGame .question-box`);
+                
+                // Calculate roots: x = -k and x = -j
+                const root1 = -k;
+                const root2 = -j;
+                const minRoot = Math.min(root1, root2);
+                const maxRoot = Math.max(root1, root2);
+                
+                totalCount[gameType]++;
+                
+                let correct = false;
+                
+                // For < 0: solution is between roots (minRoot < x < maxRoot)
+                // For > 0: solution is outside roots (x < minRoot or x > maxRoot)
+                if (sign === '<') {
+                    // Check if they entered: minRoot < x < maxRoot
+                    if (num1 === minRoot && sign1 === '<' && sign2 === '<' && num2 === maxRoot) {
+                        correct = true;
+                    }
+                } else {
+                    // Check if they entered: x < minRoot or x > maxRoot
+                    // We'll accept if they enter one of the boundaries correctly
+                    if ((num1 === minRoot && sign1 === '>') || (num2 === maxRoot && sign2 === '<')) {
+                        correct = true;
+                    }
+                }
+                
+                if (correct) {
+                    correctCount[gameType]++;
+                    feedback.className = 'feedback correct';
+                    feedback.innerHTML = '✓ Correct! Well done!';
+                    questionBox.classList.remove('animate-incorrect');
+                    questionBox.classList.add('animate-correct');
+                    setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
+                } else {
+                    feedback.className = 'feedback incorrect';
+                    let solution = '';
+                    if (sign === '<') {
+                        solution = `${minRoot} < x < ${maxRoot}`;
+                    } else {
+                        solution = `x < ${minRoot} or x > ${maxRoot}`;
+                    }
+                    feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: ${solution}</div>`;
+                    questionBox.classList.remove('animate-correct');
+                    questionBox.classList.add('animate-incorrect');
+                    setTimeout(() => questionBox.classList.remove('animate-incorrect'), 600);
+                }
+            }
+            
+            updateScore(gameType);
+        }
+        
+        function showHint(gameType) {
+            const { k, j, sign } = currentQuestion;
+            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
+            const feedback = document.getElementById('feedback-' + suffix);
             
             feedback.className = 'feedback';
             feedback.style.display = 'block';
             feedback.style.background = '#fef5e7';
             feedback.style.color = '#7d4e00';
             feedback.style.border = '2px solid #f39c12';
-            feedback.innerHTML = `💡 Hint: One factor is (x ${hintSign} ${hintNumber})`;
+            
+            if (gameType === 'factorization') {
+                const showK = Math.random() < 0.5;
+                const hintValue = showK ? k : j;
+                const hintSign = hintValue >= 0 ? '+' : '−';
+                const hintNumber = Math.abs(hintValue);
+                feedback.innerHTML = `💡 Hint: One factor is (x ${hintSign} ${hintNumber})`;
+            } else {
+                const root1 = -k;
+                const root2 = -j;
+                const minRoot = Math.min(root1, root2);
+                const maxRoot = Math.max(root1, root2);
+                feedback.innerHTML = `💡 Hint: The roots are x = ${minRoot} and x = ${maxRoot}`;
+            }
         }
         
-        function showSolution() {
-            const { k, j } = currentQuestion;
-            const feedback = document.getElementById('feedback');
-            
-            const sign1Str = k >= 0 ? '+' : '−';
-            const sign2Str = j >= 0 ? '+' : '−';
+        function showSolution(gameType) {
+            const { k, j, sign } = currentQuestion;
+            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
+            const feedback = document.getElementById('feedback-' + suffix);
             
             feedback.className = 'feedback incorrect';
-            feedback.innerHTML = `<div class="solution">The answer is: (x ${sign1Str} ${Math.abs(k)})(x ${sign2Str} ${Math.abs(j)}) = 0<br>or (x ${sign2Str} ${Math.abs(j)})(x ${sign1Str} ${Math.abs(k)}) = 0</div>`;
+            
+            if (gameType === 'factorization') {
+                const sign1Str = k >= 0 ? '+' : '−';
+                const sign2Str = j >= 0 ? '+' : '−';
+                feedback.innerHTML = `<div class="solution">The answer is: (x ${sign1Str} ${Math.abs(k)})(x ${sign2Str} ${Math.abs(j)})<br>or (x ${sign2Str} ${Math.abs(j)})(x ${sign1Str} ${Math.abs(k)})</div>`;
+            } else {
+                const root1 = -k;
+                const root2 = -j;
+                const minRoot = Math.min(root1, root2);
+                const maxRoot = Math.max(root1, root2);
+                let solution = '';
+                if (sign === '<') {
+                    solution = `${minRoot} < x < ${maxRoot}`;
+                } else {
+                    solution = `x < ${minRoot} or x > ${maxRoot}`;
+                }
+                feedback.innerHTML = `<div class="solution">The answer is: ${solution}</div>`;
+            }
         }
         
-        function nextQuestion() {
-            generateQuestion();
+        function nextQuestion(gameType) {
+            generateQuestion(gameType);
         }
         
-        function updateScore() {
-            document.getElementById('correct').textContent = correctCount;
-            document.getElementById('total').textContent = totalCount;
+        function updateScore(gameType) {
+            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
+            document.getElementById('correct-' + suffix).textContent = correctCount[gameType];
+            document.getElementById('total-' + suffix).textContent = totalCount[gameType];
         }
         
-        // Allow Enter key to navigate between inputs
-        document.getElementById('sign-1').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('input-1').focus();
+        // Wait for DOM to be ready before setting up event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Allow Enter key to navigate between inputs for factorization
+            function setupKeyListeners(suffix, gameType) {
+                document.getElementById('sign-1-' + suffix).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        document.getElementById('input-1-' + suffix).focus();
+                    }
+                });
+                
+                document.getElementById('input-1-' + suffix).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        document.getElementById('sign-2-' + suffix).focus();
+                    }
+                });
+                
+                document.getElementById('sign-2-' + suffix).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        document.getElementById('input-2-' + suffix).focus();
+                    }
+                });
+                
+                document.getElementById('input-2-' + suffix).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkAnswer(gameType);
+                    }
+                });
             }
+            
+            // Setup key listeners for both game types
+            setupKeyListeners('fact', 'factorization');
+            setupKeyListeners('ineq', 'inequalities');
+            
+            // Add click handlers for menu cards
+            document.getElementById('factorizationCard').addEventListener('click', function() {
+                console.log('Factorization card clicked');
+                startGame('factorization');
+            });
+            
+            document.getElementById('inequalitiesCard').addEventListener('click', function() {
+                console.log('Inequalities card clicked');
+                startGame('inequalities');
+            });
         });
-        
-        document.getElementById('input-1').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('sign-2').focus();
-            }
-        });
-        
-        document.getElementById('sign-2').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('input-2').focus();
-            }
-        });
-        
-        document.getElementById('input-2').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
-        });
-        
-        // Initialize with first question
-        generateQuestion();
     </script>
 </body>
 </html>
