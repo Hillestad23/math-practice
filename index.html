@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quadratic Factorization Practice</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <style>
         * {
             margin: 0;
@@ -385,6 +388,18 @@
                     <h2>Inequalities</h2>
                     <p>Solve quadratic inequalities with &lt; and &gt; signs</p>
                 </div>
+                
+                <div class="menu-card" id="derivativesCard">
+                    <div class="menu-icon">📈</div>
+                    <h2>Derivatives</h2>
+                    <p>Find the derivative of simple polynomial functions</p>
+                </div>
+                
+                <div class="menu-card" id="integralsCard">
+                    <div class="menu-icon">∫</div>
+                    <h2>Integrals</h2>
+                    <p>Calculate indefinite integrals of polynomials</p>
+                </div>
             </div>
         </div>
         
@@ -477,19 +492,89 @@
                 <div class="feedback" id="feedback-ineq"></div>
             </div>
         </div>
+        
+        <!-- Derivatives Game -->
+        <div class="game-screen" id="derivativesGame">
+            <button class="back-button" onclick="goHome()">← Back to Home</button>
+            
+            <h1>Derivative Practice</h1>
+            <p class="subtitle">Find the derivative f'(x) of the given function</p>
+            
+            <div class="score">
+                Score: <span id="correct-deriv">0</span> / <span id="total-deriv">0</span>
+            </div>
+            
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" onclick="setDifficulty('easy', 'derivatives')">Easy Mode</button>
+                <button class="difficulty-btn" onclick="setDifficulty('hard', 'derivatives')">Hard Mode</button>
+            </div>
+            
+            <div class="question-box">
+                <div class="equation" id="equation-deriv"></div>
+                <div class="instruction">Enter the derivative f'(x) = (use format like: 6x^2 or 3x or 5)</div>
+                <div class="input-group">
+                    <input type="text" id="answer-deriv" placeholder="e.g., 6x^2" style="width: 200px; font-size: 20px;">
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-check" onclick="checkAnswer('derivatives')">Check Answer</button>
+                    <button class="btn-hint" onclick="showHint('derivatives')">💡 Hint</button>
+                    <button class="btn-solution" onclick="showSolution('derivatives')">Show Solution</button>
+                    <button class="btn-next" onclick="nextQuestion('derivatives')">Next Question</button>
+                </div>
+                
+                <div class="feedback" id="feedback-deriv"></div>
+            </div>
+        </div>
+        
+        <!-- Integrals Game -->
+        <div class="game-screen" id="integralsGame">
+            <button class="back-button" onclick="goHome()">← Back to Home</button>
+            
+            <h1>Integration Practice</h1>
+            <p class="subtitle">Find the indefinite integral (ignore the constant C)</p>
+            
+            <div class="score">
+                Score: <span id="correct-integ">0</span> / <span id="total-integ">0</span>
+            </div>
+            
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" onclick="setDifficulty('easy', 'integrals')">Easy Mode</button>
+                <button class="difficulty-btn" onclick="setDifficulty('hard', 'integrals')">Hard Mode</button>
+            </div>
+            
+            <div class="question-box">
+                <div class="equation" id="equation-integ"></div>
+                <div class="instruction">Enter the integral (without + C, use format like: x^3/3 or x^2/2 or x)</div>
+                <div class="input-group">
+                    <input type="text" id="answer-integ" placeholder="e.g., x^3/3" style="width: 200px; font-size: 20px;">
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-check" onclick="checkAnswer('integrals')">Check Answer</button>
+                    <button class="btn-hint" onclick="showHint('integrals')">💡 Hint</button>
+                    <button class="btn-solution" onclick="showSolution('integrals')">Show Solution</button>
+                    <button class="btn-next" onclick="nextQuestion('integrals')">Next Question</button>
+                </div>
+                
+                <div class="feedback" id="feedback-integ"></div>
+            </div>
+        </div>
     </div>
     
     <script>
         let currentGame = null;
         let currentQuestion = {};
-        let correctCount = { factorization: 0, inequalities: 0 };
-        let totalCount = { factorization: 0, inequalities: 0 };
-        let difficulty = { factorization: 'easy', inequalities: 'easy' };
+        let correctCount = { factorization: 0, inequalities: 0, derivatives: 0, integrals: 0 };
+        let totalCount = { factorization: 0, inequalities: 0, derivatives: 0, integrals: 0 };
+        let difficulty = { factorization: 'easy', inequalities: 'easy', derivatives: 'easy', integrals: 'easy' };
         
         function goHome() {
             document.getElementById('homeScreen').classList.remove('hidden');
             document.getElementById('factorizationGame').classList.remove('active');
             document.getElementById('inequalitiesGame').classList.remove('active');
+            document.getElementById('derivativesGame').classList.remove('active');
+            document.getElementById('integralsGame').classList.remove('active');
             currentGame = null;
         }
         
@@ -503,6 +588,12 @@
             } else if (gameType === 'inequalities') {
                 document.getElementById('inequalitiesGame').classList.add('active');
                 generateQuestion('inequalities');
+            } else if (gameType === 'derivatives') {
+                document.getElementById('derivativesGame').classList.add('active');
+                generateQuestion('derivatives');
+            } else if (gameType === 'integrals') {
+                document.getElementById('integralsGame').classList.add('active');
+                generateQuestion('integrals');
             }
         }
         
@@ -510,7 +601,12 @@
             difficulty[gameType] = mode;
             
             // Update button styles for the specific game
-            const gameId = gameType === 'factorization' ? 'factorizationGame' : 'inequalitiesGame';
+            let gameId;
+            if (gameType === 'factorization') gameId = 'factorizationGame';
+            else if (gameType === 'inequalities') gameId = 'inequalitiesGame';
+            else if (gameType === 'derivatives') gameId = 'derivativesGame';
+            else if (gameType === 'integrals') gameId = 'integralsGame';
+            
             document.querySelectorAll(`#${gameId} .difficulty-btn`).forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.textContent.toLowerCase().includes(mode)) {
@@ -523,87 +619,343 @@
         }
         
         function generateQuestion(gameType) {
-            // Generate random integers for k and j based on difficulty
-            // Easy: -5 to 5, Hard: -10 to 10
-            let min, max;
-            if (difficulty[gameType] === 'easy') {
-                min = -5;
-                max = 5;
+            if (gameType === 'derivatives') {
+                // Generate simple derivative questions
+                // Easy: ax^n where n = 1-3, a = 1-5
+                // Hard: ax^n where n = 2-5, a = 1-10
+                let minPower, maxPower, minCoef, maxCoef;
+                if (difficulty[gameType] === 'easy') {
+                    minPower = 1;
+                    maxPower = 3;
+                    minCoef = 1;
+                    maxCoef = 5;
+                } else {
+                    minPower = 2;
+                    maxPower = 5;
+                    minCoef = 1;
+                    maxCoef = 10;
+                }
+                
+                const coef = Math.floor(Math.random() * (maxCoef - minCoef + 1)) + minCoef;
+                const power = Math.floor(Math.random() * (maxPower - minPower + 1)) + minPower;
+                
+                // Derivative: d/dx(ax^n) = anx^(n-1)
+                const derivCoef = coef * power;
+                const derivPower = power - 1;
+                
+                currentQuestion = { coef, power, derivCoef, derivPower, gameType };
+                displayQuestion(gameType);
+                
+            } else if (gameType === 'integrals') {
+                // Generate integral questions with coefficients
+                // Easy: ∫ax^n dx where a = 1-5, n = 0-3
+                // Hard: ∫ax^n dx where a = 1-10, n = 1-6
+                let minPower, maxPower, minCoef, maxCoef;
+                if (difficulty[gameType] === 'easy') {
+                    minPower = 0;
+                    maxPower = 3;
+                    minCoef = 1;
+                    maxCoef = 5;
+                } else {
+                    minPower = 1;
+                    maxPower = 6;
+                    minCoef = 1;
+                    maxCoef = 10;
+                }
+                
+                const coef = Math.floor(Math.random() * (maxCoef - minCoef + 1)) + minCoef;
+                const power = Math.floor(Math.random() * (maxPower - minPower + 1)) + minPower;
+                
+                // Integral: ∫ax^n dx = a*x^(n+1)/(n+1) + C
+                const integPower = power + 1;
+                const integCoef = coef / integPower;
+                
+                currentQuestion = { coef, power, integPower, integCoef, gameType };
+                displayQuestion(gameType);
+                
             } else {
-                min = -10;
-                max = 10;
+                // Original code for factorization and inequalities
+                // Generate random integers for k and j based on difficulty
+                // Easy: -5 to 5, Hard: -10 to 10
+                let min, max;
+                if (difficulty[gameType] === 'easy') {
+                    min = -5;
+                    max = 5;
+                } else {
+                    min = -10;
+                    max = 10;
+                }
+                
+                const k = Math.floor(Math.random() * (max - min + 1)) + min;
+                const j = Math.floor(Math.random() * (max - min + 1)) + min;
+            
+                // From (x + k)(x + j) = 0
+                // Expanding: x² + (k+j)x + kj = 0
+                // So: x² + bx + c = 0 where b = (k+j) and c = kj
+                const b = k + j;
+                const c = k * j;
+                
+                // For inequalities, randomly choose < or >
+                const sign = Math.random() < 0.5 ? '<' : '>';
+                
+                currentQuestion = { k, j, b, c, sign, gameType };
+                
+                displayQuestion(gameType);
             }
-            
-            const k = Math.floor(Math.random() * (max - min + 1)) + min;
-            const j = Math.floor(Math.random() * (max - min + 1)) + min;
-            
-            // From (x + k)(x + j) = 0
-            // Expanding: x² + (k+j)x + kj = 0
-            // So: x² + bx + c = 0 where b = (k+j) and c = kj
-            const b = k + j;
-            const c = k * j;
-            
-            // For inequalities, randomly choose < or >
-            const sign = Math.random() < 0.5 ? '<' : '>';
-            
-            currentQuestion = { k, j, b, c, sign, gameType };
-            
-            displayQuestion(gameType);
         }
         
         function displayQuestion(gameType) {
-            const { b, c, sign } = currentQuestion;
-            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
-            
-            // Format the equation nicely
-            let equation = "x²";
-            
-            if (b !== 0) {
-                if (b > 0) {
-                    equation += " + " + (b === 1 ? "" : b) + "x";
-                } else if (b === -1) {
-                    equation += " − x";
+            if (gameType === 'derivatives') {
+                const { coef, power } = currentQuestion;
+                const suffix = 'deriv';
+                
+                const superscripts = ['⁰', '¹', '²', '³', '⁴', '⁵'];
+                let equation = 'f(x) = ';
+                
+                if (coef === 1) {
+                    equation += 'x';
                 } else {
-                    equation += " − " + Math.abs(b) + "x";
+                    equation += coef + 'x';
                 }
-            }
-            
-            if (c !== 0) {
-                if (c > 0) {
-                    equation += " + " + c;
+                
+                if (power > 1) {
+                    equation += superscripts[power];
+                }
+                
+                document.getElementById('equation-' + suffix).textContent = equation;
+                document.getElementById('answer-' + suffix).value = '';
+                document.getElementById('feedback-' + suffix).style.display = 'none';
+                document.getElementById('answer-' + suffix).focus();
+                
+            } else if (gameType === 'integrals') {
+                const { coef, power } = currentQuestion;
+                const suffix = 'integ';
+                
+                const superscripts = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
+                let equation = '∫ ';
+                
+                // Add coefficient
+                if (coef !== 1 || power === 0) {
+                    equation += coef;
+                }
+                
+                // Add x^power
+                if (power === 0) {
+                    // just the coefficient
+                } else if (power === 1) {
+                    equation += 'x';
                 } else {
-                    equation += " − " + Math.abs(c);
+                    equation += 'x' + superscripts[power];
                 }
-            }
-            
-            // Add appropriate comparison
-            if (gameType === 'factorization') {
-                equation += " = 0";
+                
+                equation += ' dx';
+                
+                document.getElementById('equation-' + suffix).textContent = equation;
+                document.getElementById('answer-' + suffix).value = '';
+                document.getElementById('feedback-' + suffix).style.display = 'none';
+                document.getElementById('answer-' + suffix).focus();
+                
             } else {
-                equation += " " + sign + " 0";
+                const { b, c, sign } = currentQuestion;
+                const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
+                
+                // Format the equation nicely
+                let equation = "x²";
+                
+                if (b !== 0) {
+                    if (b > 0) {
+                        equation += " + " + (b === 1 ? "" : b) + "x";
+                    } else if (b === -1) {
+                        equation += " − x";
+                    } else {
+                        equation += " − " + Math.abs(b) + "x";
+                    }
+                }
+                
+                if (c !== 0) {
+                    if (c > 0) {
+                        equation += " + " + c;
+                    } else {
+                        equation += " − " + Math.abs(c);
+                    }
+                }
+                
+                // Add appropriate comparison
+                if (gameType === 'factorization') {
+                    equation += " = 0";
+                } else {
+                    equation += " " + sign + " 0";
+                }
+                
+                document.getElementById('equation-' + suffix).textContent = equation;
+                document.getElementById('input-1-' + suffix).value = '';
+                document.getElementById('input-2-' + suffix).value = '';
+                
+                if (gameType === 'factorization') {
+                    document.getElementById('sign-1-fact').value = '+';
+                    document.getElementById('sign-2-fact').value = '+';
+                    document.getElementById('sign-1-fact').focus();
+                } else {
+                    document.getElementById('sign-1-ineq').value = '<';
+                    document.getElementById('sign-2-ineq').value = '<';
+                    document.getElementById('input-1-ineq').focus();
+                }
+                
+                document.getElementById('feedback-' + suffix).style.display = 'none';
             }
-            
-            document.getElementById('equation-' + suffix).textContent = equation;
-            document.getElementById('input-1-' + suffix).value = '';
-            document.getElementById('input-2-' + suffix).value = '';
-            
-            if (gameType === 'factorization') {
-                document.getElementById('sign-1-fact').value = '+';
-                document.getElementById('sign-2-fact').value = '+';
-                document.getElementById('sign-1-fact').focus();
-            } else {
-                document.getElementById('sign-1-ineq').value = '<';
-                document.getElementById('sign-2-ineq').value = '<';
-                document.getElementById('input-1-ineq').focus();
-            }
-            
-            document.getElementById('feedback-' + suffix).style.display = 'none';
         }
         
         function checkAnswer(gameType) {
-            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
+            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : 'integ';
             
-            if (gameType === 'factorization') {
+            if (gameType === 'derivatives') {
+                const userAnswer = document.getElementById('answer-deriv').value.trim().toLowerCase().replace(/\s/g, '');
+                
+                if (userAnswer === '') {
+                    alert('Please enter an answer!');
+                    return;
+                }
+                
+                const { derivCoef, derivPower } = currentQuestion;
+                const feedback = document.getElementById('feedback-deriv');
+                const questionBox = document.querySelector(`#derivativesGame .question-box`);
+                
+                // Generate acceptable answers
+                let correctAnswers = [];
+                if (derivPower === 0) {
+                    correctAnswers = [derivCoef.toString(), `${derivCoef}`];
+                } else if (derivPower === 1) {
+                    correctAnswers = [`${derivCoef}x`, `${derivCoef}x^1`];
+                    if (derivCoef === 1) correctAnswers.push('x');
+                    if (derivCoef === -1) correctAnswers.push('-x');
+                } else {
+                    correctAnswers = [`${derivCoef}x^${derivPower}`];
+                    if (derivCoef === 1) correctAnswers.push(`x^${derivPower}`);
+                    if (derivCoef === -1) correctAnswers.push(`-x^${derivPower}`);
+                }
+                
+                totalCount[gameType]++;
+                
+                const isCorrect = correctAnswers.some(ans => userAnswer === ans.toLowerCase().replace(/\s/g, ''));
+                
+                if (isCorrect) {
+                    correctCount[gameType]++;
+                    feedback.className = 'feedback correct';
+                    feedback.style.display = 'block';
+                    let displayAnswer = derivPower === 0 ? derivCoef.toString() : (derivPower === 1 ? `${derivCoef}x` : `${derivCoef}x^${derivPower}`);
+                    if (derivCoef === 1 && derivPower > 0) displayAnswer = derivPower === 1 ? 'x' : `x^${derivPower}`;
+                    feedback.innerHTML = `✓ Correct! The answer is: f'(x) = ${displayAnswer}`;
+                    questionBox.classList.remove('animate-incorrect');
+                    questionBox.classList.add('animate-correct');
+                    setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
+                } else {
+                    feedback.className = 'feedback incorrect';
+                    feedback.style.display = 'block';
+                    let displayAnswer = derivPower === 0 ? derivCoef.toString() : (derivPower === 1 ? `${derivCoef}x` : `${derivCoef}x^${derivPower}`);
+                    if (derivCoef === 1 && derivPower > 0) displayAnswer = derivPower === 1 ? 'x' : `x^${derivPower}`;
+                    feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: f'(x) = ${displayAnswer}</div>`;
+                    questionBox.classList.remove('animate-correct');
+                    questionBox.classList.add('animate-incorrect');
+                    setTimeout(() => questionBox.classList.remove('animate-incorrect'), 600);
+                }
+                updateScore(gameType);
+                
+            } else if (gameType === 'integrals') {
+                const userAnswer = document.getElementById('answer-integ').value.trim().toLowerCase().replace(/\s/g, '');
+                
+                if (userAnswer === '') {
+                    alert('Please enter an answer!');
+                    return;
+                }
+                
+                const { coef, integPower, integCoef } = currentQuestion;
+                const feedback = document.getElementById('feedback-integ');
+                const questionBox = document.querySelector(`#integralsGame .question-box`);
+                
+                // Calculate result coefficient
+                const resultNumerator = coef;
+                const resultDenominator = integPower;
+                
+                // Generate acceptable answers
+                let correctAnswers = [];
+                
+                // Simplify fraction if possible
+                function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+                const divisor = gcd(resultNumerator, resultDenominator);
+                const simpNum = resultNumerator / divisor;
+                const simpDen = resultDenominator / divisor;
+                
+                if (simpDen === 1) {
+                    // Whole number coefficient
+                    if (simpNum === 1) {
+                        if (integPower === 1) {
+                            correctAnswers = ['x', 'x^1', '1x', '1x^1'];
+                        } else {
+                            correctAnswers = [`x^${integPower}`, `1x^${integPower}`, `x^${integPower}/1`];
+                        }
+                    } else {
+                        if (integPower === 1) {
+                            correctAnswers = [`${simpNum}x`, `${simpNum}x^1`];
+                        } else {
+                            correctAnswers = [`${simpNum}x^${integPower}`, `${simpNum}*x^${integPower}`];
+                        }
+                    }
+                } else {
+                    // Fraction coefficient
+                    if (integPower === 1) {
+                        correctAnswers = [
+                            `${simpNum}/${simpDen}x`,
+                            `${simpNum}x/${simpDen}`,
+                            `x*${simpNum}/${simpDen}`,
+                            `${resultNumerator}/${resultDenominator}x`,
+                            `${resultNumerator}x/${resultDenominator}`
+                        ];
+                    } else {
+                        correctAnswers = [
+                            `${simpNum}/${simpDen}x^${integPower}`,
+                            `${simpNum}x^${integPower}/${simpDen}`,
+                            `x^${integPower}*${simpNum}/${simpDen}`,
+                            `${resultNumerator}/${resultDenominator}x^${integPower}`,
+                            `${resultNumerator}x^${integPower}/${resultDenominator}`
+                        ];
+                    }
+                }
+                
+                totalCount[gameType]++;
+                
+                const isCorrect = correctAnswers.some(ans => userAnswer === ans.toLowerCase().replace(/\s/g, '').replace(/\*/g, ''));
+                
+                if (isCorrect) {
+                    correctCount[gameType]++;
+                    feedback.className = 'feedback correct';
+                    feedback.style.display = 'block';
+                    let displayAnswer;
+                    if (simpDen === 1) {
+                        displayAnswer = simpNum === 1 ? (integPower === 1 ? 'x' : `x^${integPower}`) : (integPower === 1 ? `${simpNum}x` : `${simpNum}x^${integPower}`);
+                    } else {
+                        displayAnswer = integPower === 1 ? `${simpNum}/${simpDen}x` : `${simpNum}x^${integPower}/${simpDen}`;
+                    }
+                    feedback.innerHTML = `✓ Correct! The answer is: ${displayAnswer} + C`;
+                    questionBox.classList.remove('animate-incorrect');
+                    questionBox.classList.add('animate-correct');
+                    setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
+                } else {
+                    feedback.className = 'feedback incorrect';
+                    feedback.style.display = 'block';
+                    let displayAnswer;
+                    if (simpDen === 1) {
+                        displayAnswer = simpNum === 1 ? (integPower === 1 ? 'x' : `x^${integPower}`) : (integPower === 1 ? `${simpNum}x` : `${simpNum}x^${integPower}`);
+                    } else {
+                        displayAnswer = integPower === 1 ? `${simpNum}/${simpDen}x` : `${simpNum}x^${integPower}/${simpDen}`;
+                    }
+                    feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: ${displayAnswer} + C</div>`;
+                    questionBox.classList.remove('animate-correct');
+                    questionBox.classList.add('animate-incorrect');
+                    setTimeout(() => questionBox.classList.remove('animate-incorrect'), 600);
+                }
+                updateScore(gameType);
+                
+            } else if (gameType === 'factorization') {
                 const sign1 = document.getElementById('sign-1-fact').value;
                 const sign2 = document.getElementById('sign-2-fact').value;
                 const num1 = parseInt(document.getElementById('input-1-fact').value);
@@ -626,12 +978,16 @@
                 if ((value1 === k && value2 === j) || (value1 === j && value2 === k)) {
                     correctCount[gameType]++;
                     feedback.className = 'feedback correct';
-                    feedback.innerHTML = '✓ Correct! Well done!';
+                    feedback.style.display = 'block';
+                    const sign1Str = k >= 0 ? '+' : '−';
+                    const sign2Str = j >= 0 ? '+' : '−';
+                    feedback.innerHTML = `✓ Correct! The answer is: (x ${sign1Str} ${Math.abs(k)})(x ${sign2Str} ${Math.abs(j)}) = 0`;
                     questionBox.classList.remove('animate-incorrect');
                     questionBox.classList.add('animate-correct');
                     setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
                 } else {
                     feedback.className = 'feedback incorrect';
+                    feedback.style.display = 'block';
                     const sign1Str = k >= 0 ? '+' : '−';
                     const sign2Str = j >= 0 ? '+' : '−';
                     feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: (x ${sign1Str} ${Math.abs(k)})(x ${sign2Str} ${Math.abs(j)})<br>or (x ${sign2Str} ${Math.abs(j)})(x ${sign1Str} ${Math.abs(k)})</div>`;
@@ -683,12 +1039,20 @@
                 if (correct) {
                     correctCount[gameType]++;
                     feedback.className = 'feedback correct';
-                    feedback.innerHTML = '✓ Correct! Well done!';
+                    feedback.style.display = 'block';
+                    let solution = '';
+                    if (sign === '<') {
+                        solution = `${minRoot} < x < ${maxRoot}`;
+                    } else {
+                        solution = `x < ${minRoot} or x > ${maxRoot}`;
+                    }
+                    feedback.innerHTML = `✓ Correct! The answer is: ${solution}`;
                     questionBox.classList.remove('animate-incorrect');
                     questionBox.classList.add('animate-correct');
                     setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
                 } else {
                     feedback.className = 'feedback incorrect';
+                    feedback.style.display = 'block';
                     let solution = '';
                     if (sign === '<') {
                         solution = `${minRoot} < x < ${maxRoot}`;
@@ -706,8 +1070,7 @@
         }
         
         function showHint(gameType) {
-            const { k, j, sign } = currentQuestion;
-            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
+            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : 'integ';
             const feedback = document.getElementById('feedback-' + suffix);
             
             feedback.className = 'feedback';
@@ -716,33 +1079,74 @@
             feedback.style.color = '#7d4e00';
             feedback.style.border = '2px solid #f39c12';
             
-            if (gameType === 'factorization') {
+            if (gameType === 'derivatives') {
+                feedback.innerHTML = `💡 Hint: Use the power rule: $(x^n)' = nx^{n-1}$`;
+            } else if (gameType === 'integrals') {
+                feedback.innerHTML = `💡 Hint: Use the power rule: $\\int x^n \\, dx = \\frac{x^{n+1}}{n+1} + C$`;
+            } else if (gameType === 'factorization') {
+                const { k, j } = currentQuestion;
                 const showK = Math.random() < 0.5;
                 const hintValue = showK ? k : j;
                 const hintSign = hintValue >= 0 ? '+' : '−';
                 const hintNumber = Math.abs(hintValue);
                 feedback.innerHTML = `💡 Hint: One factor is (x ${hintSign} ${hintNumber})`;
             } else {
+                const { k, j } = currentQuestion;
                 const root1 = -k;
                 const root2 = -j;
                 const minRoot = Math.min(root1, root2);
                 const maxRoot = Math.max(root1, root2);
                 feedback.innerHTML = `💡 Hint: The roots are x = ${minRoot} and x = ${maxRoot}`;
             }
+            
+            // Render LaTeX in the feedback
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(feedback, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
         }
         
         function showSolution(gameType) {
-            const { k, j, sign } = currentQuestion;
-            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
+            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : 'integ';
             const feedback = document.getElementById('feedback-' + suffix);
             
-            feedback.className = 'feedback incorrect';
+            feedback.className = 'feedback';
+            feedback.style.display = 'block';
+            feedback.style.background = '#d1fae5';
+            feedback.style.color = '#065f46';
+            feedback.style.border = '2px solid #10b981';
             
-            if (gameType === 'factorization') {
+            if (gameType === 'derivatives') {
+                const { derivCoef, derivPower } = currentQuestion;
+                let displayAnswer = derivPower === 0 ? derivCoef.toString() : (derivPower === 1 ? `${derivCoef}x` : `${derivCoef}x^${derivPower}`);
+                if (derivCoef === 1 && derivPower > 0) displayAnswer = derivPower === 1 ? 'x' : `x^${derivPower}`;
+                feedback.innerHTML = `✓ The answer is: f'(x) = ${displayAnswer}`;
+            } else if (gameType === 'integrals') {
+                const { coef, integPower } = currentQuestion;
+                const resultNumerator = coef;
+                const resultDenominator = integPower;
+                function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+                const divisor = gcd(resultNumerator, resultDenominator);
+                const simpNum = resultNumerator / divisor;
+                const simpDen = resultDenominator / divisor;
+                let displayAnswer;
+                if (simpDen === 1) {
+                    displayAnswer = simpNum === 1 ? (integPower === 1 ? 'x' : `x^${integPower}`) : (integPower === 1 ? `${simpNum}x` : `${simpNum}x^${integPower}`);
+                } else {
+                    displayAnswer = integPower === 1 ? `${simpNum}/${simpDen}x` : `${simpNum}x^${integPower}/${simpDen}`;
+                }
+                feedback.innerHTML = `✓ The answer is: ${displayAnswer} + C`;
+            } else if (gameType === 'factorization') {
+                const { k, j } = currentQuestion;
                 const sign1Str = k >= 0 ? '+' : '−';
                 const sign2Str = j >= 0 ? '+' : '−';
-                feedback.innerHTML = `<div class="solution">The answer is: (x ${sign1Str} ${Math.abs(k)})(x ${sign2Str} ${Math.abs(j)})<br>or (x ${sign2Str} ${Math.abs(j)})(x ${sign1Str} ${Math.abs(k)})</div>`;
+                feedback.innerHTML = `✓ The answer is: (x ${sign1Str} ${Math.abs(k)})(x ${sign2Str} ${Math.abs(j)})<br>or (x ${sign2Str} ${Math.abs(j)})(x ${sign1Str} ${Math.abs(k)})`;
             } else {
+                const { k, j, sign } = currentQuestion;
                 const root1 = -k;
                 const root2 = -j;
                 const minRoot = Math.min(root1, root2);
@@ -753,7 +1157,7 @@
                 } else {
                     solution = `x < ${minRoot} or x > ${maxRoot}`;
                 }
-                feedback.innerHTML = `<div class="solution">The answer is: ${solution}</div>`;
+                feedback.innerHTML = `✓ The answer is: ${solution}`;
             }
         }
         
@@ -762,7 +1166,7 @@
         }
         
         function updateScore(gameType) {
-            const suffix = gameType === 'factorization' ? 'fact' : 'ineq';
+            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : 'integ';
             document.getElementById('correct-' + suffix).textContent = correctCount[gameType];
             document.getElementById('total-' + suffix).textContent = totalCount[gameType];
         }
@@ -809,6 +1213,14 @@
             document.getElementById('inequalitiesCard').addEventListener('click', function() {
                 console.log('Inequalities card clicked');
                 startGame('inequalities');
+            });
+            
+            document.getElementById('derivativesCard').addEventListener('click', function() {
+                startGame('derivatives');
+            });
+            
+            document.getElementById('integralsCard').addEventListener('click', function() {
+                startGame('integrals');
             });
         });
     </script>
