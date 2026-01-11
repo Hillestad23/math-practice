@@ -400,6 +400,18 @@
                     <h2>Integrals</h2>
                     <p>Calculate indefinite integrals of polynomials</p>
                 </div>
+                
+                <div class="menu-card" id="advancedDerivativesCard">
+                    <div class="menu-icon">🔗</div>
+                    <h2>Advanced Derivatives</h2>
+                    <p>Product rule, quotient rule, and chain rule</p>
+                </div>
+                
+                <div class="menu-card" id="advancedIntegralsCard">
+                    <div class="menu-icon">🧮</div>
+                    <h2>Advanced Integrals</h2>
+                    <p>Integration by parts and substitution</p>
+                </div>
             </div>
         </div>
         
@@ -510,12 +522,12 @@
             </div>
             
             <div class="difficulty-selector" style="margin-bottom: 20px;">
-                <button class="difficulty-btn active" onclick="toggleDerivativeType('power', this)">x^n</button>
-                <button class="difficulty-btn" onclick="toggleDerivativeType('sqrt', this)">√x</button>
-                <button class="difficulty-btn" onclick="toggleDerivativeType('reciprocal', this)">1/x</button>
-                <button class="difficulty-btn" onclick="toggleDerivativeType('logarithm', this)">ln(x)</button>
-                <button class="difficulty-btn" onclick="toggleDerivativeType('exponential-linear', this)">e^(ax)</button>
-                <button class="difficulty-btn" onclick="toggleDerivativeType('exponential-general', this)">a^x</button>
+                <button class="difficulty-btn active" onclick="toggleDerivativeType('power', this)">$x^n$</button>
+                <button class="difficulty-btn" onclick="toggleDerivativeType('sqrt', this)">$\sqrt{x}$</button>
+                <button class="difficulty-btn" onclick="toggleDerivativeType('reciprocal', this)">$\frac{1}{x}$</button>
+                <button class="difficulty-btn" onclick="toggleDerivativeType('logarithm', this)">$\ln(x)$</button>
+                <button class="difficulty-btn" onclick="toggleDerivativeType('exponential-linear', this)">$e^{ax}$</button>
+                <button class="difficulty-btn" onclick="toggleDerivativeType('exponential-general', this)">$a^x$</button>
             </div>
             
             <div class="question-box">
@@ -552,16 +564,24 @@
                 <button class="difficulty-btn" onclick="setDifficulty('hard', 'integrals')">Hard Mode</button>
             </div>
             
+            <div class="difficulty-selector" style="margin-bottom: 10px;">
+                <strong style="font-size: 14px; margin-right: 10px;">Indefinite Integrals:</strong>
+                <button class="difficulty-btn active" onclick="toggleIntegralType('power', this)">$x^n$</button>
+                <button class="difficulty-btn" onclick="toggleIntegralType('reciprocal-linear', this)">$\frac{1}{x+a}$</button>
+                <button class="difficulty-btn" onclick="toggleIntegralType('exponential-linear', this)">$e^{ax}$</button>
+                <button class="difficulty-btn" onclick="toggleIntegralType('logarithm', this)">$\ln(x)$</button>
+            </div>
+            
             <div class="difficulty-selector" style="margin-bottom: 20px;">
-                <button class="difficulty-btn active" onclick="toggleIntegralType('power', this)">x^n</button>
-                <button class="difficulty-btn" onclick="toggleIntegralType('reciprocal-linear', this)">1/(x+a)</button>
-                <button class="difficulty-btn" onclick="toggleIntegralType('exponential-linear', this)">e^(ax)</button>
-                <button class="difficulty-btn" onclick="toggleIntegralType('logarithm', this)">ln(x)</button>
+                <strong style="font-size: 14px; margin-right: 10px;">Definite Integrals:</strong>
+                <button class="difficulty-btn active" onclick="toggleDefiniteIntegralType('power', this)">$\int_a^b x^n \, dx$</button>
+                <button class="difficulty-btn" onclick="toggleDefiniteIntegralType('reciprocal-linear', this)">$\int_a^b \frac{1}{x+c} \, dx$</button>
+                <button class="difficulty-btn" onclick="toggleDefiniteIntegralType('exponential', this)">$\int_a^b e^{ax} \, dx$</button>
             </div>
             
             <div class="question-box">
                 <div class="equation" id="equation-integ"></div>
-                <div class="instruction">Enter the integral (without + C, use format like: x^3/3 or x^2/2 or x)</div>
+                <div class="instruction">Enter the integral (without + C, use format like: x^3/3 or x^2/2 or x). For definite integrals, enter the numeric value.</div>
                 <div class="input-group">
                     <input type="text" id="answer-integ" placeholder="e.g., x^3/3" style="width: 200px; font-size: 20px;">
                 </div>
@@ -576,16 +596,98 @@
                 <div class="feedback" id="feedback-integ"></div>
             </div>
         </div>
+        
+        <!-- Advanced Derivatives Game -->
+        <div class="game-screen" id="advancedDerivativesGame">
+            <button class="back-button" onclick="goHome()">← Back to Home</button>
+            
+            <h1>Advanced Derivatives Practice</h1>
+            <p class="subtitle">Product rule, quotient rule, and chain rule</p>
+            
+            <div class="score">
+                Score: <span id="correct-advderiv">0</span> / <span id="total-advderiv">0</span>
+            </div>
+            
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" onclick="setDifficulty('easy', 'advancedDerivatives')">Easy Mode</button>
+                <button class="difficulty-btn" onclick="setDifficulty('hard', 'advancedDerivatives')">Hard Mode</button>
+            </div>
+            
+            <div class="difficulty-selector" style="margin-bottom: 20px;">
+                <button class="difficulty-btn active" onclick="toggleAdvDerivativeType('product', this)">Product Rule</button>
+                <button class="difficulty-btn" onclick="toggleAdvDerivativeType('quotient', this)">Quotient Rule</button>
+                <button class="difficulty-btn" onclick="toggleAdvDerivativeType('chain', this)">Chain Rule</button>
+            </div>
+            
+            <div class="question-box">
+                <div class="equation" id="equation-advderiv"></div>
+                <div class="instruction">Enter the derivative f'(x):</div>
+                <div class="input-group">
+                    <input type="text" id="answer-advderiv" placeholder="e.g., 2x+3" style="width: 300px; font-size: 20px;">
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-check" onclick="checkAnswer('advancedDerivatives')">Check Answer</button>
+                    <button class="btn-hint" onclick="showHint('advancedDerivatives')">💡 Hint</button>
+                    <button class="btn-solution" onclick="showSolution('advancedDerivatives')">Show Solution</button>
+                    <button class="btn-next" onclick="nextQuestion('advancedDerivatives')">Next Question</button>
+                </div>
+                
+                <div class="feedback" id="feedback-advderiv"></div>
+            </div>
+        </div>
+        
+        <!-- Advanced Integrals Game -->
+        <div class="game-screen" id="advancedIntegralsGame">
+            <button class="back-button" onclick="goHome()">← Back to Home</button>
+            
+            <h1>Advanced Integrals Practice</h1>
+            <p class="subtitle">Integration by parts and substitution</p>
+            
+            <div class="score">
+                Score: <span id="correct-advinteg">0</span> / <span id="total-advinteg">0</span>
+            </div>
+            
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" onclick="setDifficulty('easy', 'advancedIntegrals')">Easy Mode</button>
+                <button class="difficulty-btn" onclick="setDifficulty('hard', 'advancedIntegrals')">Hard Mode</button>
+            </div>
+            
+            <div class="difficulty-selector" style="margin-bottom: 20px;">
+                <button class="difficulty-btn active" onclick="toggleAdvIntegralType('parts', this)">Integration by Parts</button>
+                <button class="difficulty-btn" onclick="toggleAdvIntegralType('substitution', this)">Substitution</button>
+            </div>
+            
+            <div class="question-box">
+                <div class="equation" id="equation-advinteg"></div>
+                <div class="instruction">Enter the integral result (without + C):</div>
+                <div class="input-group">
+                    <input type="text" id="answer-advinteg" placeholder="e.g., x*e^x-e^x" style="width: 300px; font-size: 20px;">
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn-check" onclick="checkAnswer('advancedIntegrals')">Check Answer</button>
+                    <button class="btn-hint" onclick="showHint('advancedIntegrals')">💡 Hint</button>
+                    <button class="btn-solution" onclick="showSolution('advancedIntegrals')">Show Solution</button>
+                    <button class="btn-next" onclick="nextQuestion('advancedIntegrals')">Next Question</button>
+                </div>
+                
+                <div class="feedback" id="feedback-advinteg"></div>
+            </div>
+        </div>
     </div>
     
     <script>
         let currentGame = null;
         let currentQuestion = {};
-        let correctCount = { factorization: 0, inequalities: 0, derivatives: 0, integrals: 0 };
-        let totalCount = { factorization: 0, inequalities: 0, derivatives: 0, integrals: 0 };
-        let difficulty = { factorization: 'easy', inequalities: 'easy', derivatives: 'easy', integrals: 'easy' };
-        let integralTypes = ['power']; // Array of active integral types
+        let correctCount = { factorization: 0, inequalities: 0, derivatives: 0, integrals: 0, advancedDerivatives: 0, advancedIntegrals: 0 };
+        let totalCount = { factorization: 0, inequalities: 0, derivatives: 0, integrals: 0, advancedDerivatives: 0, advancedIntegrals: 0 };
+        let difficulty = { factorization: 'easy', inequalities: 'easy', derivatives: 'easy', integrals: 'easy', advancedDerivatives: 'easy', advancedIntegrals: 'easy' };
+        let integralTypes = ['power']; // Array of active indefinite integral types
+        let definiteIntegralTypes = ['power']; // Array of active definite integral types
         let derivativeTypes = ['power']; // Array of active derivative types
+        let advDerivativeTypes = ['product']; // Array of active advanced derivative types
+        let advIntegralTypes = ['parts']; // Array of active advanced integral types
         
         function goHome() {
             document.getElementById('homeScreen').classList.remove('hidden');
@@ -593,6 +695,8 @@
             document.getElementById('inequalitiesGame').classList.remove('active');
             document.getElementById('derivativesGame').classList.remove('active');
             document.getElementById('integralsGame').classList.remove('active');
+            document.getElementById('advancedDerivativesGame').classList.remove('active');
+            document.getElementById('advancedIntegralsGame').classList.remove('active');
             currentGame = null;
         }
         
@@ -606,6 +710,23 @@
             } else {
                 // Add if not present
                 integralTypes.push(type);
+                button.classList.add('active');
+            }
+            
+            // Generate new question with new type mix
+            generateQuestion('integrals');
+        }
+        
+        function toggleDefiniteIntegralType(type, button) {
+            const index = definiteIntegralTypes.indexOf(type);
+            
+            if (index > -1) {
+                // Remove if already present
+                definiteIntegralTypes.splice(index, 1);
+                button.classList.remove('active');
+            } else {
+                // Add if not present
+                definiteIntegralTypes.push(type);
                 button.classList.add('active');
             }
             
@@ -630,6 +751,40 @@
             generateQuestion('derivatives');
         }
         
+        function toggleAdvDerivativeType(type, button) {
+            const index = advDerivativeTypes.indexOf(type);
+            
+            if (index > -1) {
+                // Remove if already present
+                advDerivativeTypes.splice(index, 1);
+                button.classList.remove('active');
+            } else {
+                // Add if not present
+                advDerivativeTypes.push(type);
+                button.classList.add('active');
+            }
+            
+            // Generate new question with new type mix
+            generateQuestion('advancedDerivatives');
+        }
+        
+        function toggleAdvIntegralType(type, button) {
+            const index = advIntegralTypes.indexOf(type);
+            
+            if (index > -1) {
+                // Remove if already present
+                advIntegralTypes.splice(index, 1);
+                button.classList.remove('active');
+            } else {
+                // Add if not present
+                advIntegralTypes.push(type);
+                button.classList.add('active');
+            }
+            
+            // Generate new question with new type mix
+            generateQuestion('advancedIntegrals');
+        }
+        
         function startGame(gameType) {
             currentGame = gameType;
             document.getElementById('homeScreen').classList.add('hidden');
@@ -646,7 +801,32 @@
             } else if (gameType === 'integrals') {
                 document.getElementById('integralsGame').classList.add('active');
                 generateQuestion('integrals');
+            } else if (gameType === 'advancedDerivatives') {
+                document.getElementById('advancedDerivativesGame').classList.add('active');
+                generateQuestion('advancedDerivatives');
+            } else if (gameType === 'advancedIntegrals') {
+                document.getElementById('advancedIntegralsGame').classList.add('active');
+                generateQuestion('advancedIntegrals');
             }
+            
+            // Render LaTeX in all buttons
+            renderLatexInButtons();
+        }
+        
+        function renderLatexInButtons() {
+            // Find all buttons with LaTeX ($ signs) and render them
+            const buttons = document.querySelectorAll('button.difficulty-btn');
+            buttons.forEach(button => {
+                if (button.innerHTML.includes('$')) {
+                    renderMathInElement(button, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
+            });
         }
         
         function setDifficulty(mode, gameType) {
@@ -658,6 +838,8 @@
             else if (gameType === 'inequalities') gameId = 'inequalitiesGame';
             else if (gameType === 'derivatives') gameId = 'derivativesGame';
             else if (gameType === 'integrals') gameId = 'integralsGame';
+            else if (gameType === 'advancedDerivatives') gameId = 'advancedDerivativesGame';
+            else if (gameType === 'advancedIntegrals') gameId = 'advancedIntegralsGame';
             
             // Update only the Easy/Hard difficulty buttons
             const gameElement = document.getElementById(gameId);
@@ -734,12 +916,162 @@
                 
                 displayQuestion(gameType);
                 
-            } else if (gameType === 'integrals') {
-                // Pick a random type from the active integral types, default to 'power' if none selected
-                const activeTypes = integralTypes.length > 0 ? integralTypes : ['power'];
+            } else if (gameType === 'advancedDerivatives') {
+                // Pick a random type from the active advanced derivative types
+                const activeTypes = advDerivativeTypes.length > 0 ? advDerivativeTypes : ['product'];
                 const selectedType = activeTypes[Math.floor(Math.random() * activeTypes.length)];
                 
-                // Generate integral questions based on type
+                if (selectedType === 'product') {
+                    // f(x) = g(x)·h(x) → f'(x) = g'(x)·h(x) + g(x)·h'(x)
+                    // Easy: simple polynomials like (2x)(3x), (x+1)(x-2)
+                    // Hard: more complex like (x^2+1)(2x-3)
+                    let g, h, gDeriv, hDeriv;
+                    
+                    if (difficulty[gameType] === 'easy') {
+                        // g(x) = ax or ax+b, h(x) = cx or cx+d
+                        const a = Math.floor(Math.random() * 4) + 1;
+                        const c = Math.floor(Math.random() * 4) + 1;
+                        const useLinear = Math.random() < 0.5;
+                        
+                        if (useLinear) {
+                            const b = Math.floor(Math.random() * 5) - 2;
+                            const d = Math.floor(Math.random() * 5) - 2;
+                            g = { type: 'linear', a, b }; // ax + b
+                            h = { type: 'linear', c, d }; // cx + d
+                            gDeriv = a;
+                            hDeriv = c;
+                        } else {
+                            g = { type: 'monomial', a, n: 1 }; // ax
+                            h = { type: 'monomial', c, n: 1 }; // cx
+                            gDeriv = a;
+                            hDeriv = c;
+                        }
+                    } else {
+                        // More complex: quadratic or higher powers
+                        const a = Math.floor(Math.random() * 3) + 1;
+                        const b = Math.floor(Math.random() * 5) - 2;
+                        const c = Math.floor(Math.random() * 3) + 1;
+                        const d = Math.floor(Math.random() * 5) - 2;
+                        const n = Math.floor(Math.random() * 2) + 2; // 2 or 3
+                        
+                        g = { type: 'polynomial', a, b, n }; // ax^n + b
+                        h = { type: 'linear', c, d }; // cx + d
+                        gDeriv = { a: a * n, n: n - 1 }; // n*a*x^(n-1)
+                        hDeriv = c;
+                    }
+                    
+                    currentQuestion = { type: 'product', g, h, gDeriv, hDeriv, gameType };
+                    
+                } else if (selectedType === 'quotient') {
+                    // f(x) = g(x)/h(x) → f'(x) = [g'(x)·h(x) - g(x)·h'(x)] / h(x)²
+                    let g, h, gDeriv, hDeriv;
+                    
+                    if (difficulty[gameType] === 'easy') {
+                        const a = Math.floor(Math.random() * 4) + 1;
+                        const b = Math.floor(Math.random() * 5) - 2;
+                        const c = Math.floor(Math.random() * 3) + 1;
+                        
+                        g = { type: 'linear', a, b }; // ax + b
+                        h = { type: 'monomial', c, n: 1 }; // cx (avoid division by zero)
+                        gDeriv = a;
+                        hDeriv = c;
+                    } else {
+                        const a = Math.floor(Math.random() * 3) + 1;
+                        const b = Math.floor(Math.random() * 5) - 2;
+                        const c = Math.floor(Math.random() * 3) + 1;
+                        const d = Math.floor(Math.random() * 4) + 1;
+                        const n = Math.floor(Math.random() * 2) + 2;
+                        
+                        g = { type: 'polynomial', a, b, n }; // ax^n + b
+                        h = { type: 'linear', c, d }; // cx + d
+                        gDeriv = { a: a * n, n: n - 1 };
+                        hDeriv = c;
+                    }
+                    
+                    currentQuestion = { type: 'quotient', g, h, gDeriv, hDeriv, gameType };
+                    
+                } else if (selectedType === 'chain') {
+                    // f(x) = g(x)^n → f'(x) = n·g(x)^(n-1)·g'(x)
+                    let g, n, gDeriv;
+                    
+                    if (difficulty[gameType] === 'easy') {
+                        const a = Math.floor(Math.random() * 4) + 1;
+                        const b = Math.floor(Math.random() * 5) - 2;
+                        n = Math.floor(Math.random() * 3) + 2; // 2, 3, or 4
+                        
+                        g = { type: 'linear', a, b }; // (ax + b)^n
+                        gDeriv = a;
+                    } else {
+                        const a = Math.floor(Math.random() * 3) + 1;
+                        const b = Math.floor(Math.random() * 5) - 2;
+                        const power = Math.floor(Math.random() * 2) + 2;
+                        n = Math.floor(Math.random() * 2) + 2;
+                        
+                        g = { type: 'polynomial', a, b, n: power }; // (ax^power + b)^n
+                        gDeriv = { a: a * power, n: power - 1 };
+                    }
+                    
+                    currentQuestion = { type: 'chain', g, n, gDeriv, gameType };
+                }
+                
+                displayQuestion(gameType);
+                
+            } else if (gameType === 'integrals') {
+                // Decide whether to generate definite or indefinite integral
+                const generateDefinite = definiteIntegralTypes.length > 0 && (integralTypes.length === 0 || Math.random() < 0.5);
+                
+                if (generateDefinite) {
+                    // Definite integrals ∫ₐᵇ f(x) dx - use active types or default to 'power'
+                    const activeDefiniteTypes = definiteIntegralTypes.length > 0 ? definiteIntegralTypes : ['power'];
+                    const subtype = activeDefiniteTypes[Math.floor(Math.random() * activeDefiniteTypes.length)];
+                    
+                    if (subtype === 'power') {
+                        // ∫ₐᵇ c·x^n dx
+                        const coef = Math.floor(Math.random() * 5) + 1; // coefficient 1-5
+                        const n = difficulty[gameType] === 'easy' ? Math.floor(Math.random() * 3) + 1 : Math.floor(Math.random() * 4) + 1;
+                        const a = Math.floor(Math.random() * 3);
+                        const b = a + Math.floor(Math.random() * 3) + 1;
+                        // Answer: [c·x^(n+1)/(n+1)]ₐᵇ = c·(b^(n+1) - a^(n+1))/(n+1)
+                        const answer = coef * (Math.pow(b, n+1) - Math.pow(a, n+1)) / (n+1);
+                        currentQuestion = { type: 'definite', subtype: 'power', coef, n, a, b, answer, gameType };
+                        
+                    } else if (subtype === 'exponential') {
+                        // ∫ₐᵇ c·e^(ax) dx
+                        const coef = Math.floor(Math.random() * 5) + 1; // coefficient 1-5
+                        const alpha = Math.floor(Math.random() * 3) + 1; // exponent coefficient 1-3
+                        const alphaSign = Math.random() < 0.5 ? 1 : -1;
+                        const alphaValue = alpha * alphaSign;
+                        const lowerBound = Math.floor(Math.random() * 3);
+                        const upperBound = lowerBound + Math.floor(Math.random() * 3) + 1;
+                        // Answer: [c·e^(ax)/a]ₐᵇ = c·(e^(a*b) - e^(a*a))/a
+                        const answer = coef * (Math.exp(alphaValue * upperBound) - Math.exp(alphaValue * lowerBound)) / alphaValue;
+                        currentQuestion = { type: 'definite', subtype: 'exponential', coef, alpha: alphaValue, a: lowerBound, b: upperBound, answer, gameType };
+                        
+                    } else if (subtype === 'reciprocal') {
+                        // ∫ₐᵇ 1/x dx
+                        const a = Math.floor(Math.random() * 3) + 1;
+                        const b = a + Math.floor(Math.random() * 3) + 1;
+                        const answer = Math.log(b) - Math.log(a);
+                        currentQuestion = { type: 'definite', subtype: 'reciprocal', a, b, answer, gameType };
+                        
+                    } else if (subtype === 'reciprocal-linear') {
+                        // ∫ₐᵇ k/(x+c) dx
+                        const k = Math.floor(Math.random() * 5) + 1; // coefficient 1-5
+                        const c = Math.floor(Math.random() * 5) + 1;
+                        const cSign = Math.random() < 0.5 ? 1 : -1;
+                        const cValue = c * cSign;
+                        const a = Math.floor(Math.random() * 3);
+                        const b = a + Math.floor(Math.random() * 3) + 1;
+                        // Answer: [k·ln|x+c|]ₐᵇ = k·(ln|b+c| - ln|a+c|)
+                        const answer = k * (Math.log(Math.abs(b + cValue)) - Math.log(Math.abs(a + cValue)));
+                        currentQuestion = { type: 'definite', subtype: 'reciprocal-linear', k, c: cValue, a, b, answer, gameType };
+                    }
+                } else {
+                    // Pick a random type from the active indefinite integral types, default to 'power' if none selected
+                    const activeTypes = integralTypes.length > 0 ? integralTypes : ['power'];
+                    const selectedType = activeTypes[Math.floor(Math.random() * activeTypes.length)];
+                
+                // Generate indefinite integral questions based on type
                 if (selectedType === 'power') {
                     // ∫x^n dx = x^(n+1)/(n+1) + C
                     let minPower, maxPower, minCoef, maxCoef;
@@ -782,6 +1114,68 @@
                     // ∫c*ln(x) dx = c*(x*ln(x) - x) + C
                     const c = Math.floor(Math.random() * 5) + 1; // coefficient 1-5
                     currentQuestion = { type: 'logarithm', c, gameType };
+                }
+                }
+                
+                displayQuestion(gameType);
+                
+            } else if (gameType === 'advancedIntegrals') {
+                // Pick a random type from active advanced integral types
+                const activeTypes = advIntegralTypes.length > 0 ? advIntegralTypes : ['parts'];
+                const selectedType = activeTypes[Math.floor(Math.random() * activeTypes.length)];
+                
+                if (selectedType === 'parts') {
+                    // Integration by parts: ∫u·v' dx = u·v - ∫v·u' dx
+                    // Easy: ∫x·e^x dx, ∫x·sin(x) dx, ∫ln(x) dx
+                    // Hard: ∫x²·e^x dx, ∫x·ln(x) dx
+                    
+                    if (difficulty[gameType] === 'easy') {
+                        const types = ['x*e^x', 'x*e^(2x)', 'x*e^(-x)'];
+                        const selected = types[Math.floor(Math.random() * types.length)];
+                        
+                        if (selected === 'x*e^x') {
+                            currentQuestion = { type: 'parts', subtype: 'x*e^x', u: 'x', vPrime: 'e^x', gameType };
+                        } else if (selected === 'x*e^(2x)') {
+                            currentQuestion = { type: 'parts', subtype: 'x*e^(2x)', u: 'x', vPrime: 'e^(2x)', a: 2, gameType };
+                        } else {
+                            currentQuestion = { type: 'parts', subtype: 'x*e^(-x)', u: 'x', vPrime: 'e^(-x)', a: -1, gameType };
+                        }
+                    } else {
+                        const types = ['x^2*e^x', 'ln(x)'];
+                        const selected = types[Math.floor(Math.random() * types.length)];
+                        
+                        if (selected === 'x^2*e^x') {
+                            currentQuestion = { type: 'parts', subtype: 'x^2*e^x', u: 'x^2', vPrime: 'e^x', gameType };
+                        } else {
+                            currentQuestion = { type: 'parts', subtype: 'ln(x)', u: 'ln(x)', vPrime: '1', gameType };
+                        }
+                    }
+                } else if (selectedType === 'substitution') {
+                    // Substitution: ∫f(g(x))·g'(x) dx
+                    // Easy: ∫2x/(x²+1) dx, ∫3x²/(x³-1) dx
+                    // Hard: ∫x/(x²+1)² dx, ∫e^x/(e^x+1) dx
+                    
+                    if (difficulty[gameType] === 'easy') {
+                        const types = ['2x/(x^2+1)', '3x^2/(x^3+1)', '4x^3/(x^4-1)'];
+                        const selected = types[Math.floor(Math.random() * types.length)];
+                        
+                        if (selected === '2x/(x^2+1)') {
+                            currentQuestion = { type: 'substitution', subtype: '2x/(x^2+1)', numerator: '2x', denominator: 'x^2+1', u: 'x^2+1', gameType };
+                        } else if (selected === '3x^2/(x^3+1)') {
+                            currentQuestion = { type: 'substitution', subtype: '3x^2/(x^3+1)', numerator: '3x^2', denominator: 'x^3+1', u: 'x^3+1', gameType };
+                        } else {
+                            currentQuestion = { type: 'substitution', subtype: '4x^3/(x^4-1)', numerator: '4x^3', denominator: 'x^4-1', u: 'x^4-1', gameType };
+                        }
+                    } else {
+                        const types = ['2x/(x^2+1)^2', '6x^2/(x^3+1)^2'];
+                        const selected = types[Math.floor(Math.random() * types.length)];
+                        
+                        if (selected === '2x/(x^2+1)^2') {
+                            currentQuestion = { type: 'substitution', subtype: '2x/(x^2+1)^2', numerator: '2x', denominator: '(x^2+1)^2', u: 'x^2+1', power: 2, gameType };
+                        } else {
+                            currentQuestion = { type: 'substitution', subtype: '6x^2/(x^3+1)^2', numerator: '6x^2', denominator: '(x^3+1)^2', u: 'x^3+1', power: 2, gameType };
+                        }
+                    }
                 }
                 
                 displayQuestion(gameType);
@@ -939,6 +1333,42 @@
                     equation = '\\int ';
                     if (c !== 1) equation += c;
                     equation += '\\ln(x) \\, dx';
+                    
+                } else if (currentQuestion.type === 'definite') {
+                    const { subtype, a, b } = currentQuestion;
+                    equation = `\\int_{${a}}^{${b}} `;
+                    
+                    if (subtype === 'power') {
+                        const { coef, n } = currentQuestion;
+                        if (coef !== 1) equation += coef;
+                        if (n === 1) {
+                            equation += 'x';
+                        } else {
+                            equation += `x^{${n}}`;
+                        }
+                    } else if (subtype === 'exponential') {
+                        const { coef, alpha } = currentQuestion;
+                        if (coef !== 1) equation += coef;
+                        if (alpha === 1) {
+                            equation += 'e^x';
+                        } else if (alpha === -1) {
+                            equation += 'e^{-x}';
+                        } else if (alpha > 0) {
+                            equation += `e^{${alpha}x}`;
+                        } else {
+                            equation += `e^{${alpha}x}`;
+                        }
+                    } else if (subtype === 'reciprocal') {
+                        equation += '\\frac{1}{x}';
+                    } else if (subtype === 'reciprocal-linear') {
+                        const { k, c } = currentQuestion;
+                        if (c >= 0) {
+                            equation += `\\frac{${k}}{x+${c}}`;
+                        } else {
+                            equation += `\\frac{${k}}{x${c}}`;
+                        }
+                    }
+                    equation += ' \\, dx';
                 }
                 
                 document.getElementById('equation-' + suffix).innerHTML = `$${equation}$`;
@@ -955,6 +1385,128 @@
                         ]
                     });
                 }
+                
+            } else if (gameType === 'advancedDerivatives') {
+                const suffix = 'advderiv';
+                let equation = '';
+                
+                // Helper function to format polynomial
+                function formatPoly(p) {
+                    if (p.type === 'monomial') {
+                        const coef = p.a !== undefined ? p.a : p.c;
+                        return coef === 1 ? 'x' : `${coef}x`;
+                    } else if (p.type === 'linear') {
+                        const coef = p.a !== undefined ? p.a : p.c;
+                        const constant = p.b !== undefined ? p.b : p.d;
+                        let result = coef === 1 ? 'x' : `${coef}x`;
+                        if (constant > 0) result += ` + ${constant}`;
+                        else if (constant < 0) result += ` - ${Math.abs(constant)}`;
+                        return result;
+                    } else if (p.type === 'polynomial') {
+                        const coef = p.a !== undefined ? p.a : p.c;
+                        const constant = p.b !== undefined ? p.b : p.d;
+                        let result = coef === 1 ? (p.n === 1 ? 'x' : `x^{${p.n}}`) : (p.n === 1 ? `${coef}x` : `${coef}x^{${p.n}}`);
+                        if (constant > 0) result += ` + ${constant}`;
+                        else if (constant < 0) result += ` - ${Math.abs(constant)}`;
+                        return result;
+                    }
+                    return '';
+                }
+                
+                if (currentQuestion.type === 'product') {
+                    const { g, h } = currentQuestion;
+                    const gStr = formatPoly(g);
+                    const hStr = formatPoly(h);
+                    
+                    // Add parentheses only if the polynomial has multiple terms
+                    const needsParenG = (g.type === 'linear' && g.b !== undefined && g.b !== 0) || 
+                                       (g.type === 'polynomial' && g.b !== undefined && g.b !== 0);
+                    const needsParenH = (h.type === 'linear' && h.d !== undefined && h.d !== 0) || 
+                                       (h.type === 'polynomial' && h.d !== undefined && h.d !== 0);
+                    
+                    const gDisplay = needsParenG ? `(${gStr})` : gStr;
+                    const hDisplay = needsParenH ? `(${hStr})` : hStr;
+                    
+                    equation = `f(x) = ${gDisplay} \\cdot ${hDisplay}`;
+                } else if (currentQuestion.type === 'quotient') {
+                    const { g, h } = currentQuestion;
+                    equation = `f(x) = \\frac{${formatPoly(g)}}{${formatPoly(h)}}`;
+                } else if (currentQuestion.type === 'chain') {
+                    const { g, n } = currentQuestion;
+                    equation = `f(x) = (${formatPoly(g)})^{${n}}`;
+                }
+                
+                const equationElement = document.getElementById('equation-' + suffix);
+                equationElement.textContent = '';
+                equationElement.innerHTML = `$${equation}$`;
+                document.getElementById('answer-' + suffix).value = '';
+                document.getElementById('feedback-' + suffix).style.display = 'none';
+                
+                // Render the LaTeX
+                if (typeof renderMathInElement !== 'undefined') {
+                    renderMathInElement(equationElement, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
+                
+                document.getElementById('answer-' + suffix).focus();
+                
+            } else if (gameType === 'advancedIntegrals') {
+                const suffix = 'advinteg';
+                let equation = '\\int ';
+                
+                if (currentQuestion.type === 'parts') {
+                    const { subtype } = currentQuestion;
+                    
+                    if (subtype === 'x*e^x') {
+                        equation += 'x \\cdot e^x \\, dx';
+                    } else if (subtype === 'x*e^(2x)') {
+                        equation += 'x \\cdot e^{2x} \\, dx';
+                    } else if (subtype === 'x*e^(-x)') {
+                        equation += 'x \\cdot e^{-x} \\, dx';
+                    } else if (subtype === 'x^2*e^x') {
+                        equation += 'x^2 \\cdot e^x \\, dx';
+                    } else if (subtype === 'ln(x)') {
+                        equation += '\\ln(x) \\, dx';
+                    }
+                } else if (currentQuestion.type === 'substitution') {
+                    const { subtype } = currentQuestion;
+                    
+                    if (subtype === '2x/(x^2+1)') {
+                        equation += '\\frac{2x}{x^2+1} \\, dx';
+                    } else if (subtype === '3x^2/(x^3+1)') {
+                        equation += '\\frac{3x^2}{x^3+1} \\, dx';
+                    } else if (subtype === '4x^3/(x^4-1)') {
+                        equation += '\\frac{4x^3}{x^4-1} \\, dx';
+                    } else if (subtype === '2x/(x^2+1)^2') {
+                        equation += '\\frac{2x}{(x^2+1)^2} \\, dx';
+                    } else if (subtype === '6x^2/(x^3+1)^2') {
+                        equation += '\\frac{6x^2}{(x^3+1)^2} \\, dx';
+                    }
+                }
+                
+                const equationElement = document.getElementById('equation-' + suffix);
+                equationElement.textContent = '';
+                equationElement.innerHTML = `$${equation}$`;
+                document.getElementById('answer-' + suffix).value = '';
+                document.getElementById('feedback-' + suffix).style.display = 'none';
+                
+                // Render the LaTeX
+                if (typeof renderMathInElement !== 'undefined') {
+                    renderMathInElement(equationElement, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
+                
+                document.getElementById('answer-' + suffix).focus();
                 
             } else {
                 const { b, c, sign } = currentQuestion;
@@ -1098,6 +1650,330 @@
                 }
                 updateScore(gameType);
                 
+            } else if (gameType === 'advancedDerivatives') {
+                const userAnswer = document.getElementById('answer-advderiv').value.trim().toLowerCase().replace(/\s/g, '');
+                
+                if (userAnswer === '') {
+                    alert('Please enter an answer!');
+                    return;
+                }
+                
+                const feedback = document.getElementById('feedback-advderiv');
+                const questionBox = document.querySelector(`#advancedDerivativesGame .question-box`);
+                let correctAnswers = [];
+                let displayAnswer = '';
+                
+                // Helper to multiply two polynomials represented as terms
+                function multiplyPolys(p1, p2) {
+                    // p1 and p2 are in form {type, a, b, n} or just numbers
+                    let result = [];
+                    
+                    // Convert to term arrays [coef, power]
+                    const terms1 = typeof p1 === 'number' ? [[p1, 0]] : 
+                                  p1.type === 'monomial' ? [[p1.a, 1]] :
+                                  p1.type === 'linear' ? [[p1.a, 1], [p1.b, 0]] :
+                                  p1.type === 'polynomial' ? [[p1.a, p1.n], [p1.b, 0]] :
+                                  [[p1.a, p1.n || 0]];
+                    
+                    const terms2 = typeof p2 === 'number' ? [[p2, 0]] :
+                                  p2.type === 'monomial' ? [[p2.a, 1]] :
+                                  p2.type === 'linear' ? [[p2.a || p2.c, 1], [p2.b || p2.d, 0]] :
+                                  p2.type === 'polynomial' ? [[p2.a, p2.n], [p2.b, 0]] :
+                                  [[p2.a, p2.n || 0]];
+                    
+                    // Multiply each term in terms1 with each term in terms2
+                    for (let [c1, p1] of terms1) {
+                        for (let [c2, p2] of terms2) {
+                            if (c1 !== 0 && c2 !== 0) {
+                                result.push([c1 * c2, p1 + p2]);
+                            }
+                        }
+                    }
+                    
+                    // Combine like terms
+                    const combined = {};
+                    for (let [coef, power] of result) {
+                        combined[power] = (combined[power] || 0) + coef;
+                    }
+                    
+                    // Convert back to array and sort by power descending
+                    return Object.entries(combined)
+                        .map(([power, coef]) => [coef, parseInt(power)])
+                        .filter(([coef]) => coef !== 0)
+                        .sort((a, b) => b[1] - a[1]);
+                }
+                
+                if (currentQuestion.type === 'product') {
+                    const { g, h, gDeriv, hDeriv } = currentQuestion;
+                    // f'(x) = g'(x)h(x) + g(x)h'(x)
+                    const term1 = multiplyPolys(gDeriv, h);
+                    const term2 = multiplyPolys(g, hDeriv);
+                    
+                    // Add the two results
+                    const combined = {};
+                    for (let [coef, power] of [...term1, ...term2]) {
+                        combined[power] = (combined[power] || 0) + coef;
+                    }
+                    
+                    const result = Object.entries(combined)
+                        .map(([power, coef]) => [coef, parseInt(power)])
+                        .filter(([coef]) => coef !== 0)
+                        .sort((a, b) => b[1] - a[1]);
+                    
+                    if (result.length === 1) {
+                        const [coef, power] = result[0];
+                        if (power === 0) {
+                            correctAnswers = [coef.toString()];
+                            displayAnswer = coef.toString();
+                        } else if (power === 1) {
+                            correctAnswers = [`${coef}x`];
+                            if (coef === 1) correctAnswers.push('x');
+                            if (coef === -1) correctAnswers.push('-x');
+                            displayAnswer = coef === 1 ? 'x' : coef === -1 ? '-x' : `${coef}x`;
+                        } else {
+                            correctAnswers = [`${coef}x^${power}`];
+                            if (coef === 1) correctAnswers.push(`x^${power}`);
+                            if (coef === -1) correctAnswers.push(`-x^${power}`);
+                            displayAnswer = coef === 1 ? `x^${power}` : coef === -1 ? `-x^${power}` : `${coef}x^${power}`;
+                        }
+                    } else {
+                        // Two terms
+                        const [c1, p1] = result[0];
+                        const [c2, p2] = result[1];
+                        const formatTerm = (coef, power, isFirst = false) => {
+                            if (power === 0) return isFirst ? coef.toString() : (coef > 0 ? `+${coef}` : coef.toString());
+                            if (power === 1) {
+                                if (isFirst) return coef === 1 ? 'x' : coef === -1 ? '-x' : `${coef}x`;
+                                return coef === 1 ? '+x' : coef === -1 ? '-x' : coef > 0 ? `+${coef}x` : `${coef}x`;
+                            }
+                            if (isFirst) return coef === 1 ? `x^${power}` : coef === -1 ? `-x^${power}` : `${coef}x^${power}`;
+                            return coef === 1 ? `+x^${power}` : coef === -1 ? `-x^${power}` : coef > 0 ? `+${coef}x^${power}` : `${coef}x^${power}`;
+                        };
+                        displayAnswer = formatTerm(c1, p1, true) + formatTerm(c2, p2);
+                        correctAnswers = [displayAnswer.replace(/\s/g, '')];
+                    }
+                    
+                } else if (currentQuestion.type === 'quotient') {
+                    const { g, h, gDeriv, hDeriv } = currentQuestion;
+                    // f'(x) = [g'(x)h(x) - g(x)h'(x)] / h(x)²
+                    const term1 = multiplyPolys(gDeriv, h);
+                    const term2 = multiplyPolys(g, hDeriv);
+                    
+                    // Subtract: g'h - gh'
+                    const combined = {};
+                    for (let [coef, power] of term1) {
+                        combined[power] = (combined[power] || 0) + coef;
+                    }
+                    for (let [coef, power] of term2) {
+                        combined[power] = (combined[power] || 0) - coef;
+                    }
+                    
+                    const numerator = Object.entries(combined)
+                        .map(([power, coef]) => [coef, parseInt(power)])
+                        .filter(([coef]) => coef !== 0)
+                        .sort((a, b) => b[1] - a[1]);
+                    
+                    // Denominator: h(x)²
+                    const hSquared = multiplyPolys(h, h);
+                    
+                    // Format numerator
+                    const formatTerm = (coef, power, isFirst = false) => {
+                        if (power === 0) return isFirst ? coef.toString() : (coef > 0 ? `+${coef}` : coef.toString());
+                        if (power === 1) {
+                            if (isFirst) return coef === 1 ? 'x' : coef === -1 ? '-x' : `${coef}x`;
+                            return coef === 1 ? '+x' : coef === -1 ? '-x' : coef > 0 ? `+${coef}x` : `${coef}x`;
+                        }
+                        if (isFirst) return coef === 1 ? `x^${power}` : coef === -1 ? `-x^${power}` : `${coef}x^${power}`;
+                        return coef === 1 ? `+x^${power}` : coef === -1 ? `-x^${power}` : coef > 0 ? `+${coef}x^${power}` : `${coef}x^${power}`;
+                    };
+                    
+                    let numStr = '';
+                    for (let i = 0; i < numerator.length; i++) {
+                        const [coef, power] = numerator[i];
+                        numStr += formatTerm(coef, power, i === 0);
+                    }
+                    
+                    let denomStr = '';
+                    for (let i = 0; i < hSquared.length; i++) {
+                        const [coef, power] = hSquared[i];
+                        denomStr += formatTerm(coef, power, i === 0);
+                    }
+                    
+                    displayAnswer = `(${numStr})/(${denomStr})`;
+                    correctAnswers = [`(${numStr})/(${denomStr})`.replace(/\s/g, ''), `${numStr}/(${denomStr})`.replace(/\s/g, '')];
+                    
+                } else if (currentQuestion.type === 'chain') {
+                    const { g, gDeriv, n } = currentQuestion;
+                    // f'(x) = n·g(x)^(n-1)·g'(x)
+                    
+                    // For easy mode: (ax)^n derivative is n*a*x^(n-1) * a = n*a^2*x^(n-1)
+                    // For harder: (ax+b)^n, we need to compute g^(n-1) then multiply by n and g'
+                    
+                    let result;
+                    if (g.type === 'monomial' || (g.type === 'linear' && g.b === 0)) {
+                        // Simple case: (ax)^n -> n*a^n*x^(n-1)
+                        const a = g.a;
+                        result = [[n * Math.pow(a, n), n - 1]];
+                    } else {
+                        // More complex: need to expand (ax+b)^(n-1) then multiply by n*(ax+b)' = n*a
+                        let gPowerNMinus1 = g;
+                        for (let i = 1; i < n - 1; i++) {
+                            const temp = multiplyPolys(gPowerNMinus1, g);
+                            gPowerNMinus1 = { type: 'result', terms: temp };
+                        }
+                        
+                        // Multiply by n * g'
+                        if (n === 2) {
+                            result = multiplyPolys(g, {type: 'monomial', a: n * gDeriv});
+                        } else {
+                            result = gPowerNMinus1.terms.map(([c, p]) => [c * n * gDeriv, p]);
+                        }
+                    }
+                    
+                    if (result.length === 1) {
+                        const [coef, power] = result[0];
+                        if (power === 0) {
+                            correctAnswers = [coef.toString()];
+                            displayAnswer = coef.toString();
+                        } else if (power === 1) {
+                            correctAnswers = [`${coef}x`];
+                            if (coef === 1) correctAnswers.push('x');
+                            if (coef === -1) correctAnswers.push('-x');
+                            displayAnswer = coef === 1 ? 'x' : coef === -1 ? '-x' : `${coef}x`;
+                        } else {
+                            correctAnswers = [`${coef}x^${power}`];
+                            if (coef === 1) correctAnswers.push(`x^${power}`);
+                            if (coef === -1) correctAnswers.push(`-x^${power}`);
+                            displayAnswer = coef === 1 ? `x^${power}` : coef === -1 ? `-x^${power}` : `${coef}x^${power}`;
+                        }
+                    } else {
+                        // Multiple terms
+                        const formatTerm = (coef, power, isFirst = false) => {
+                            if (power === 0) return isFirst ? coef.toString() : (coef > 0 ? `+${coef}` : coef.toString());
+                            if (power === 1) {
+                                if (isFirst) return coef === 1 ? 'x' : coef === -1 ? '-x' : `${coef}x`;
+                                return coef === 1 ? '+x' : coef === -1 ? '-x' : coef > 0 ? `+${coef}x` : `${coef}x`;
+                            }
+                            if (isFirst) return coef === 1 ? `x^${power}` : coef === -1 ? `-x^${power}` : `${coef}x^${power}`;
+                            return coef === 1 ? `+x^${power}` : coef === -1 ? `-x^${power}` : coef > 0 ? `+${coef}x^${power}` : `${coef}x^${power}`;
+                        };
+                        let answerStr = '';
+                        for (let i = 0; i < result.length; i++) {
+                            const [coef, power] = result[i];
+                            answerStr += formatTerm(coef, power, i === 0);
+                        }
+                        displayAnswer = answerStr;
+                        correctAnswers = [answerStr.replace(/\s/g, '')];
+                    }
+                }
+                
+                totalCount[gameType]++;
+                
+                const isCorrect = correctAnswers.some(ans => userAnswer === ans.toLowerCase().replace(/\s/g, '').replace(/\*/g, ''));
+                
+                if (isCorrect) {
+                    correctCount[gameType]++;
+                    feedback.className = 'feedback correct';
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = `✓ Correct! The answer is: f'(x) = ${displayAnswer}`;
+                    questionBox.classList.remove('animate-incorrect');
+                    questionBox.classList.add('animate-correct');
+                    setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
+                } else {
+                    feedback.className = 'feedback incorrect';
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: f'(x) = ${displayAnswer}</div>`;
+                    questionBox.classList.remove('animate-correct');
+                    questionBox.classList.add('animate-incorrect');
+                    setTimeout(() => questionBox.classList.remove('animate-incorrect'), 600);
+                }
+                updateScore(gameType);
+                
+            } else if (gameType === 'advancedIntegrals') {
+                const userAnswer = document.getElementById('answer-advinteg').value.trim().toLowerCase().replace(/\s/g, '');
+                
+                if (userAnswer === '') {
+                    alert('Please enter an answer!');
+                    return;
+                }
+                
+                const feedback = document.getElementById('feedback-advinteg');
+                const questionBox = document.querySelector(`#advancedIntegralsGame .question-box`);
+                let correctAnswers = [];
+                let displayAnswer = '';
+                
+                if (currentQuestion.type === 'parts') {
+                    const { subtype } = currentQuestion;
+                    
+                    if (subtype === 'x*e^x') {
+                        // ∫xe^x dx = xe^x - e^x = (x-1)e^x
+                        correctAnswers = ['xe^x-e^x', 'x*e^x-e^x', '(x-1)e^x', '(x-1)*e^x', 'e^x(x-1)', 'e^x*(x-1)'];
+                        displayAnswer = 'xe^x - e^x';
+                    } else if (subtype === 'x*e^(2x)') {
+                        // ∫xe^(2x) dx = (x/2)e^(2x) - (1/4)e^(2x) = e^(2x)(x/2 - 1/4)
+                        correctAnswers = ['(x/2)e^(2x)-(1/4)e^(2x)', 'xe^(2x)/2-e^(2x)/4', '(2x-1)e^(2x)/4', '(1/4)e^(2x)(2x-1)', 'e^(2x)(2x-1)/4'];
+                        displayAnswer = '(x/2)e^(2x) - (1/4)e^(2x)';
+                    } else if (subtype === 'x*e^(-x)') {
+                        // ∫xe^(-x) dx = -xe^(-x) - e^(-x) = -(x+1)e^(-x)
+                        correctAnswers = ['-xe^(-x)-e^(-x)', '-x*e^(-x)-e^(-x)', '-(x+1)e^(-x)', '-e^(-x)(x+1)', '-e^(-x)*(x+1)'];
+                        displayAnswer = '-xe^(-x) - e^(-x)';
+                    } else if (subtype === 'x^2*e^x') {
+                        // ∫x²e^x dx = x²e^x - 2xe^x + 2e^x = (x²-2x+2)e^x
+                        correctAnswers = ['x^2e^x-2xe^x+2e^x', 'x^2*e^x-2x*e^x+2e^x', 'e^x(x^2-2x+2)', '(x^2-2x+2)e^x'];
+                        displayAnswer = 'x²e^x - 2xe^x + 2e^x';
+                    } else if (subtype === 'ln(x)') {
+                        // ∫ln(x) dx = xln(x) - x
+                        correctAnswers = ['xln(x)-x', 'xlnx-x', 'x*ln(x)-x', 'x*lnx-x', 'xlog(x)-x'];
+                        displayAnswer = 'x·ln(x) - x';
+                    }
+                } else if (currentQuestion.type === 'substitution') {
+                    const { subtype } = currentQuestion;
+                    
+                    if (subtype === '2x/(x^2+1)') {
+                        // u = x²+1, du = 2x dx → ∫(1/u) du = ln|u| = ln|x²+1|
+                        correctAnswers = ['ln(x^2+1)', 'ln|x^2+1|', 'log(x^2+1)'];
+                        displayAnswer = 'ln|x² + 1|';
+                    } else if (subtype === '3x^2/(x^3+1)') {
+                        // u = x³+1, du = 3x² dx → ∫(1/u) du = ln|u| = ln|x³+1|
+                        correctAnswers = ['ln(x^3+1)', 'ln|x^3+1|', 'log(x^3+1)'];
+                        displayAnswer = 'ln|x³ + 1|';
+                    } else if (subtype === '4x^3/(x^4-1)') {
+                        // u = x⁴-1, du = 4x³ dx → ∫(1/u) du = ln|u| = ln|x⁴-1|
+                        correctAnswers = ['ln(x^4-1)', 'ln|x^4-1|', 'log(x^4-1)'];
+                        displayAnswer = 'ln|x⁴ - 1|';
+                    } else if (subtype === '2x/(x^2+1)^2') {
+                        // u = x²+1, du = 2x dx → ∫u^(-2) du = -u^(-1) = -1/u = -1/(x²+1)
+                        correctAnswers = ['-1/(x^2+1)', '-1/(x^2+1)', '-(x^2+1)^(-1)'];
+                        displayAnswer = '-1/(x² + 1)';
+                    } else if (subtype === '6x^2/(x^3+1)^2') {
+                        // u = x³+1, du = 6x² dx → ∫u^(-2) du = -u^(-1) = -1/u = -1/(x³+1)
+                        correctAnswers = ['-1/(x^3+1)', '-1/(x^3+1)', '-(x^3+1)^(-1)'];
+                        displayAnswer = '-1/(x³ + 1)';
+                    }
+                }
+                
+                totalCount[gameType]++;
+                
+                const isCorrect = correctAnswers.some(ans => userAnswer === ans.toLowerCase().replace(/\s/g, '').replace(/\*/g, ''));
+                
+                if (isCorrect) {
+                    correctCount[gameType]++;
+                    feedback.className = 'feedback correct';
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = `✓ Correct! The answer is: ${displayAnswer} + C`;
+                    questionBox.classList.remove('animate-incorrect');
+                    questionBox.classList.add('animate-correct');
+                    setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
+                } else {
+                    feedback.className = 'feedback incorrect';
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: ${displayAnswer} + C</div>`;
+                    questionBox.classList.remove('animate-correct');
+                    questionBox.classList.add('animate-incorrect');
+                    setTimeout(() => questionBox.classList.remove('animate-incorrect'), 600);
+                }
+                updateScore(gameType);
+                
             } else if (gameType === 'integrals') {
                 const userAnswer = document.getElementById('answer-integ').value.trim().toLowerCase().replace(/\s/g, '');
                 
@@ -1235,6 +2111,42 @@
                         ];
                         displayAnswer = `${c}(x·ln(x) − x)`;
                     }
+                    
+                } else if (currentQuestion.type === 'definite') {
+                    const { answer } = currentQuestion;
+                    // Round to 2 decimal places for comparison
+                    const roundedAnswer = Math.round(answer * 100) / 100;
+                    const tolerance = 0.01; // Allow small rounding errors
+                    
+                    const userNum = parseFloat(userAnswer);
+                    if (isNaN(userNum)) {
+                        alert('Please enter a numeric value!');
+                        return;
+                    }
+                    
+                    const roundedUser = Math.round(userNum * 100) / 100;
+                    const isCorrect = Math.abs(roundedUser - roundedAnswer) <= tolerance;
+                    
+                    totalCount[gameType]++;
+                    
+                    if (isCorrect) {
+                        correctCount[gameType]++;
+                        feedback.className = 'feedback correct';
+                        feedback.style.display = 'block';
+                        feedback.innerHTML = `✓ Correct! The answer is: ${roundedAnswer}`;
+                        questionBox.classList.remove('animate-incorrect');
+                        questionBox.classList.add('animate-correct');
+                        setTimeout(() => questionBox.classList.remove('animate-correct'), 600);
+                    } else {
+                        feedback.className = 'feedback incorrect';
+                        feedback.style.display = 'block';
+                        feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: ${roundedAnswer}</div>`;
+                        questionBox.classList.remove('animate-correct');
+                        questionBox.classList.add('animate-incorrect');
+                        setTimeout(() => questionBox.classList.remove('animate-incorrect'), 600);
+                    }
+                    updateScore(gameType);
+                    return; // Exit early for definite integrals
                 }
                 
                 totalCount[gameType]++;
@@ -1401,7 +2313,7 @@
         }
         
         function showHint(gameType) {
-            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : 'integ';
+            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : gameType === 'advancedDerivatives' ? 'advderiv' : gameType === 'advancedIntegrals' ? 'advinteg' : 'integ';
             const feedback = document.getElementById('feedback-' + suffix);
             
             feedback.className = 'feedback';
@@ -1410,7 +2322,21 @@
             feedback.style.color = '#7d4e00';
             feedback.style.border = '2px solid #f39c12';
             
-            if (gameType === 'derivatives') {
+            if (gameType === 'advancedIntegrals') {
+                if (currentQuestion.type === 'parts') {
+                    feedback.innerHTML = `💡 Hint: Integration by parts: $\\int u \\cdot v' \\, dx = u \\cdot v - \\int v \\cdot u' \\, dx$`;
+                } else if (currentQuestion.type === 'substitution') {
+                    feedback.innerHTML = `💡 Hint: Substitution: Let $u = ${currentQuestion.u}$, then find $du$ and substitute`;
+                }
+            } else if (gameType === 'advancedDerivatives') {
+                if (currentQuestion.type === 'product') {
+                    feedback.innerHTML = `💡 Hint: Product rule: $(g \\cdot h)' = g' \\cdot h + g \\cdot h'$`;
+                } else if (currentQuestion.type === 'quotient') {
+                    feedback.innerHTML = `💡 Hint: Quotient rule: $(\\frac{g}{h})' = \\frac{g' \\cdot h - g \\cdot h'}{h^2}$`;
+                } else if (currentQuestion.type === 'chain') {
+                    feedback.innerHTML = `💡 Hint: Chain rule: $(g^n)' = n \\cdot g^{n-1} \\cdot g'$`;
+                }
+            } else if (gameType === 'derivatives') {
                 if (currentQuestion.type === 'power') {
                     feedback.innerHTML = `💡 Hint: Use the power rule: $(x^n)' = nx^{n-1}$`;
                 } else if (currentQuestion.type === 'sqrt') {
@@ -1433,6 +2359,17 @@
                     feedback.innerHTML = `💡 Hint: $\\int c \\cdot e^{ax} \\, dx = \\frac{c}{a}e^{ax} + C$`;
                 } else if (currentQuestion.type === 'logarithm') {
                     feedback.innerHTML = `💡 Hint: $\\int c \\cdot \\ln x \\, dx = c(x \\ln x - x) + C$ (use integration by parts)`;
+                } else if (currentQuestion.type === 'definite') {
+                    const { subtype } = currentQuestion;
+                    if (subtype === 'power') {
+                        feedback.innerHTML = `💡 Hint: $\\int_a^b x^n \\, dx = [\\frac{x^{n+1}}{n+1}]_a^b = \\frac{b^{n+1}}{n+1} - \\frac{a^{n+1}}{n+1}$`;
+                    } else if (subtype === 'exponential') {
+                        feedback.innerHTML = `💡 Hint: $\\int_a^b e^{\\alpha x} \\, dx = [\\frac{e^{\\alpha x}}{\\alpha}]_a^b = \\frac{e^{\\alpha b} - e^{\\alpha a}}{\\alpha}$`;
+                    } else if (subtype === 'reciprocal') {
+                        feedback.innerHTML = `💡 Hint: $\\int_a^b \\frac{1}{x} \\, dx = [\\ln x]_a^b = \\ln b - \\ln a$`;
+                    } else if (subtype === 'reciprocal-linear') {
+                        feedback.innerHTML = `💡 Hint: $\\int_a^b \\frac{1}{x+c} \\, dx = [\\ln|x+c|]_a^b = \\ln|b+c| - \\ln|a+c|$`;
+                    }
                 }
             } else if (gameType === 'factorization') {
                 const { k, j } = currentQuestion;
@@ -1462,7 +2399,7 @@
         }
         
         function showSolution(gameType) {
-            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : 'integ';
+            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : gameType === 'advancedDerivatives' ? 'advderiv' : gameType === 'advancedIntegrals' ? 'advinteg' : 'integ';
             const feedback = document.getElementById('feedback-' + suffix);
             
             feedback.className = 'feedback';
@@ -1471,7 +2408,173 @@
             feedback.style.color = '#065f46';
             feedback.style.border = '2px solid #10b981';
             
-            if (gameType === 'derivatives') {
+            if (gameType === 'advancedIntegrals') {
+                let displayAnswer = '';
+                
+                if (currentQuestion.type === 'parts') {
+                    const { subtype } = currentQuestion;
+                    
+                    if (subtype === 'x*e^x') {
+                        displayAnswer = 'xe^x - e^x';
+                    } else if (subtype === 'x*e^(2x)') {
+                        displayAnswer = '(x/2)e^(2x) - (1/4)e^(2x)';
+                    } else if (subtype === 'x*e^(-x)') {
+                        displayAnswer = '-xe^(-x) - e^(-x)';
+                    } else if (subtype === 'x^2*e^x') {
+                        displayAnswer = 'x²e^x - 2xe^x + 2e^x';
+                    } else if (subtype === 'ln(x)') {
+                        displayAnswer = 'x·ln(x) - x';
+                    }
+                } else if (currentQuestion.type === 'substitution') {
+                    const { subtype } = currentQuestion;
+                    
+                    if (subtype === '2x/(x^2+1)') {
+                        displayAnswer = 'ln|x² + 1|';
+                    } else if (subtype === '3x^2/(x^3+1)') {
+                        displayAnswer = 'ln|x³ + 1|';
+                    } else if (subtype === '4x^3/(x^4-1)') {
+                        displayAnswer = 'ln|x⁴ - 1|';
+                    } else if (subtype === '2x/(x^2+1)^2') {
+                        displayAnswer = '-1/(x² + 1)';
+                    } else if (subtype === '6x^2/(x^3+1)^2') {
+                        displayAnswer = '-1/(x³ + 1)';
+                    }
+                }
+                
+                feedback.innerHTML = `✓ The answer is: ${displayAnswer} + C`;
+            } else if (gameType === 'advancedDerivatives') {
+                // Use the same logic as checkAnswer - just copy the display answer generation
+                let displayAnswer = '';
+                
+                // Copy the multiplyPolys helper from checkAnswer
+                function multiplyPolys(p1, p2) {
+                    let result = [];
+                    
+                    const terms1 = typeof p1 === 'number' ? [[p1, 0]] : 
+                                  p1.type === 'monomial' ? [[p1.a, 1]] :
+                                  p1.type === 'linear' ? [[p1.a, 1], [p1.b, 0]] :
+                                  p1.type === 'polynomial' ? [[p1.a, p1.n], [p1.b, 0]] :
+                                  p1.type === 'result' ? p1.terms :
+                                  [[p1.a, p1.n || 0]];
+                    
+                    const terms2 = typeof p2 === 'number' ? [[p2, 0]] :
+                                  p2.type === 'monomial' ? [[p2.a, 1]] :
+                                  p2.type === 'linear' ? [[p2.a || p2.c, 1], [p2.b || p2.d, 0]] :
+                                  p2.type === 'polynomial' ? [[p2.a, p2.n], [p2.b, 0]] :
+                                  [[p2.a, p2.n || 0]];
+                    
+                    for (let [c1, p1] of terms1) {
+                        for (let [c2, p2] of terms2) {
+                            if (c1 !== 0 && c2 !== 0) {
+                                result.push([c1 * c2, p1 + p2]);
+                            }
+                        }
+                    }
+                    
+                    const combined = {};
+                    for (let [coef, power] of result) {
+                        combined[power] = (combined[power] || 0) + coef;
+                    }
+                    
+                    return Object.entries(combined)
+                        .map(([power, coef]) => [coef, parseInt(power)])
+                        .filter(([coef]) => coef !== 0)
+                        .sort((a, b) => b[1] - a[1]);
+                }
+                
+                const formatTerm = (coef, power, isFirst = false) => {
+                    if (power === 0) return isFirst ? coef.toString() : (coef > 0 ? ` + ${coef}` : ` - ${Math.abs(coef)}`);
+                    if (power === 1) {
+                        if (isFirst) return coef === 1 ? 'x' : coef === -1 ? '-x' : `${coef}x`;
+                        return coef === 1 ? ' + x' : coef === -1 ? ' - x' : coef > 0 ? ` + ${coef}x` : ` - ${Math.abs(coef)}x`;
+                    }
+                    if (isFirst) return coef === 1 ? `x^${power}` : coef === -1 ? `-x^${power}` : `${coef}x^${power}`;
+                    return coef === 1 ? ` + x^${power}` : coef === -1 ? ` - x^${power}` : coef > 0 ? ` + ${coef}x^${power}` : ` - ${Math.abs(coef)}x^${power}`;
+                };
+                
+                if (currentQuestion.type === 'product') {
+                    const { g, h, gDeriv, hDeriv } = currentQuestion;
+                    const term1 = multiplyPolys(gDeriv, h);
+                    const term2 = multiplyPolys(g, hDeriv);
+                    
+                    const combined = {};
+                    for (let [coef, power] of [...term1, ...term2]) {
+                        combined[power] = (combined[power] || 0) + coef;
+                    }
+                    
+                    const result = Object.entries(combined)
+                        .map(([power, coef]) => [coef, parseInt(power)])
+                        .filter(([coef]) => coef !== 0)
+                        .sort((a, b) => b[1] - a[1]);
+                    
+                    let answerStr = '';
+                    for (let i = 0; i < result.length; i++) {
+                        answerStr += formatTerm(result[i][0], result[i][1], i === 0);
+                    }
+                    displayAnswer = answerStr;
+                    
+                } else if (currentQuestion.type === 'quotient') {
+                    const { g, h, gDeriv, hDeriv } = currentQuestion;
+                    const term1 = multiplyPolys(gDeriv, h);
+                    const term2 = multiplyPolys(g, hDeriv);
+                    
+                    const combined = {};
+                    for (let [coef, power] of term1) {
+                        combined[power] = (combined[power] || 0) + coef;
+                    }
+                    for (let [coef, power] of term2) {
+                        combined[power] = (combined[power] || 0) - coef;
+                    }
+                    
+                    const numerator = Object.entries(combined)
+                        .map(([power, coef]) => [coef, parseInt(power)])
+                        .filter(([coef]) => coef !== 0)
+                        .sort((a, b) => b[1] - a[1]);
+                    
+                    const hSquared = multiplyPolys(h, h);
+                    
+                    let numStr = '';
+                    for (let i = 0; i < numerator.length; i++) {
+                        numStr += formatTerm(numerator[i][0], numerator[i][1], i === 0);
+                    }
+                    
+                    let denomStr = '';
+                    for (let i = 0; i < hSquared.length; i++) {
+                        denomStr += formatTerm(hSquared[i][0], hSquared[i][1], i === 0);
+                    }
+                    
+                    displayAnswer = `(${numStr}) / (${denomStr})`;
+                    
+                } else if (currentQuestion.type === 'chain') {
+                    const { g, gDeriv, n } = currentQuestion;
+                    
+                    let result;
+                    if (g.type === 'monomial' || (g.type === 'linear' && g.b === 0)) {
+                        const a = g.a;
+                        result = [[n * Math.pow(a, n), n - 1]];
+                    } else {
+                        let gPowerNMinus1 = g;
+                        for (let i = 1; i < n - 1; i++) {
+                            const temp = multiplyPolys(gPowerNMinus1, g);
+                            gPowerNMinus1 = { type: 'result', terms: temp };
+                        }
+                        
+                        if (n === 2) {
+                            result = multiplyPolys(g, {type: 'monomial', a: n * gDeriv});
+                        } else {
+                            result = gPowerNMinus1.terms.map(([c, p]) => [c * n * gDeriv, p]);
+                        }
+                    }
+                    
+                    let answerStr = '';
+                    for (let i = 0; i < result.length; i++) {
+                        answerStr += formatTerm(result[i][0], result[i][1], i === 0);
+                    }
+                    displayAnswer = answerStr;
+                }
+                
+                feedback.innerHTML = `✓ The answer is: f'(x) = ${displayAnswer}`;
+            } else if (gameType === 'derivatives') {
                 let displayAnswer = '';
                 
                 if (currentQuestion.type === 'power') {
@@ -1549,9 +2652,17 @@
                 } else if (currentQuestion.type === 'logarithm') {
                     const { c } = currentQuestion;
                     displayAnswer = c === 1 ? 'x·ln(x) − x' : `${c}(x·ln(x) − x)`;
+                    
+                } else if (currentQuestion.type === 'definite') {
+                    const { answer } = currentQuestion;
+                    displayAnswer = (Math.round(answer * 100) / 100).toString();
                 }
                 
-                feedback.innerHTML = `✓ The answer is: ${displayAnswer} + C`;
+                if (currentQuestion.type === 'definite') {
+                    feedback.innerHTML = `✓ The answer is: ${displayAnswer}`;
+                } else {
+                    feedback.innerHTML = `✓ The answer is: ${displayAnswer} + C`;
+                }
             } else if (gameType === 'factorization') {
                 const { k, j } = currentQuestion;
                 const sign1Str = k >= 0 ? '+' : '−';
@@ -1578,7 +2689,7 @@
         }
         
         function updateScore(gameType) {
-            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : 'integ';
+            const suffix = gameType === 'factorization' ? 'fact' : gameType === 'inequalities' ? 'ineq' : gameType === 'derivatives' ? 'deriv' : gameType === 'advancedDerivatives' ? 'deriv' : gameType === 'advancedIntegrals' ? 'advinteg' : 'integ';
             document.getElementById('correct-' + suffix).textContent = correctCount[gameType];
             document.getElementById('total-' + suffix).textContent = totalCount[gameType];
         }
@@ -1634,6 +2745,17 @@
             document.getElementById('integralsCard').addEventListener('click', function() {
                 startGame('integrals');
             });
+            
+            document.getElementById('advancedDerivativesCard').addEventListener('click', function() {
+                startGame('advancedDerivatives');
+            });
+            
+            document.getElementById('advancedIntegralsCard').addEventListener('click', function() {
+                startGame('advancedIntegrals');
+            });
+            
+            // Render LaTeX in buttons on page load
+            renderLatexInButtons();
         });
     </script>
 </body>
