@@ -910,6 +910,10 @@
                             `${resultNumerator}/${resultDenominator}x`,
                             `${resultNumerator}x/${resultDenominator}`
                         ];
+                        // Also accept without leading 1
+                        if (simpNum === 1) {
+                            correctAnswers.push(`x/${simpDen}`, `1/${simpDen}x`);
+                        }
                     } else {
                         correctAnswers = [
                             `${simpNum}/${simpDen}x^${integPower}`,
@@ -918,6 +922,10 @@
                             `${resultNumerator}/${resultDenominator}x^${integPower}`,
                             `${resultNumerator}x^${integPower}/${resultDenominator}`
                         ];
+                        // Also accept without leading 1
+                        if (simpNum === 1) {
+                            correctAnswers.push(`x^${integPower}/${simpDen}`, `1/${simpDen}x^${integPower}`);
+                        }
                     }
                 }
                 
@@ -933,7 +941,11 @@
                     if (simpDen === 1) {
                         displayAnswer = simpNum === 1 ? (integPower === 1 ? 'x' : `x^${integPower}`) : (integPower === 1 ? `${simpNum}x` : `${simpNum}x^${integPower}`);
                     } else {
-                        displayAnswer = integPower === 1 ? `${simpNum}/${simpDen}x` : `${simpNum}x^${integPower}/${simpDen}`;
+                        if (simpNum === 1) {
+                            displayAnswer = integPower === 1 ? `x/${simpDen}` : `x^${integPower}/${simpDen}`;
+                        } else {
+                            displayAnswer = integPower === 1 ? `${simpNum}/${simpDen}x` : `${simpNum}x^${integPower}/${simpDen}`;
+                        }
                     }
                     feedback.innerHTML = `✓ Correct! The answer is: ${displayAnswer} + C`;
                     questionBox.classList.remove('animate-incorrect');
@@ -946,7 +958,11 @@
                     if (simpDen === 1) {
                         displayAnswer = simpNum === 1 ? (integPower === 1 ? 'x' : `x^${integPower}`) : (integPower === 1 ? `${simpNum}x` : `${simpNum}x^${integPower}`);
                     } else {
-                        displayAnswer = integPower === 1 ? `${simpNum}/${simpDen}x` : `${simpNum}x^${integPower}/${simpDen}`;
+                        if (simpNum === 1) {
+                            displayAnswer = integPower === 1 ? `x/${simpDen}` : `x^${integPower}/${simpDen}`;
+                        } else {
+                            displayAnswer = integPower === 1 ? `${simpNum}/${simpDen}x` : `${simpNum}x^${integPower}/${simpDen}`;
+                        }
                     }
                     feedback.innerHTML = `✗ Incorrect!<div class="solution">The correct answer is: ${displayAnswer} + C</div>`;
                     questionBox.classList.remove('animate-correct');
